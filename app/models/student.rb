@@ -1,4 +1,5 @@
 class Student < ApplicationRecord
+  after_initialize :set_defaults
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -19,5 +20,9 @@ class Student < ApplicationRecord
   end
   def self.ransackable_associations(auth_object = nil)
     ["chapter_results", "courses", "enrollments", "posts", "replies"]
+  end
+  def set_defaults
+    self.is_suspended = false
+    self.name = self.email.split("@")[0]
   end
 end

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../assets/stylesheets/instructor_index.css">
+    <title>Course Catalog</title>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="#">All Courses</a></li>
+            <li><a href="#">Create Course</a></li>
+            <li><a href="#">Account Settings</a></li>
+        </ul>
+    </nav>
+    <h2> Welcome <%= current_instructor.name %>!</h2>
+    <h1>Course Catalog</h1>
+    <main class="course-list">
+        <!-- Course cards will be dynamically generated here -->
+    </main>
+</body>
+</html>
