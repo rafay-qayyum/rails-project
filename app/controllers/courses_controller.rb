@@ -1,4 +1,7 @@
 class CoursesController < ApplicationController
+  def index
+    @courses=Course.all
+  end
   def new
     @instructor = Instructor.find(current_instructor.id)
     @course = @instructor.courses.new
