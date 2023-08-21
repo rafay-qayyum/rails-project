@@ -25,4 +25,7 @@ class Student < ApplicationRecord
     self.is_suspended = false
     self.name = self.email.split("@")[0]
   end
+  def is?( requested_role )
+    :student.to_s == requested_role.to_s
+  end
 end

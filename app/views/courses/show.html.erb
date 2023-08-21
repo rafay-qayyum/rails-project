@@ -14,11 +14,18 @@
         <li><%= link_to chapter.name, course_chapter_path(@course, chapter) %></li>
       <% end %>
     </ul>
+    <%if can? :manage, @course%>
     <%= link_to "Create New Chapter", new_course_chapter_path(@course), class: "btn-primary" %>
+    <%end%>
   </div>
   <br><br>
+  <%if can? :manage, @course %>
       <%= link_to "Back to Course Catalog", authenticated_instructor_root_path, class:"button"%>
         <%= link_to "Edit Course", edit_instructor_course_path(@course.instructor,@course), class:"button" %>
         <%= link_to "Delete Course", instructor_course_path(@course.instructor,@course), class:"button", data: { 'turbo-method': :delete}%>
+    <%else%>
+        <%= link_to "Back to Course Catalog", courses_path, class:"button"%>
+    <%end%>
+
 </body>
 </html>

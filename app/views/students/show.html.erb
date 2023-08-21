@@ -9,7 +9,7 @@
 <body>
     <nav class="navbar">
         <ul>
-            <li><a href="#">Courses</a></li>
+            <li><%= link_to 'All Courses', courses_path %></li>
             <li><a href="#">Enrolled Courses</a></li>
             <li><a href="<%=edit_student_registration_path %>">Account Settings</a></li>
             <li><%= link_to "Logout",destroy_student_session_path , data: {

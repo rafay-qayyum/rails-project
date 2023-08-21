@@ -23,4 +23,8 @@ class Instructor < ApplicationRecord
     self.name = self.email.split("@")[0]
   end
 
+
+  def is?( requested_role )
+    :instructor.to_s == requested_role.to_s
+  end
 end

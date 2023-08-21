@@ -1,4 +1,5 @@
 class CoursesController < ApplicationController
+  load_and_authorize_resource
   def index
     @courses=Course.all
   end
@@ -41,5 +42,8 @@ class CoursesController < ApplicationController
 private
   def course_params
     params.require(:course).permit(:title,:description,:price,:language,:requirements,:image)
+  end
+  def current_user
+    current_student || current_instructor
   end
 end

@@ -1,5 +1,5 @@
 class ChaptersController < ApplicationController
-
+  load_and_authorize_resource
   def index
     @chapters=Chapter.find(params[:course_id])
   end
@@ -45,5 +45,8 @@ class ChaptersController < ApplicationController
   private
   def chapter_params
     params.require(:chapter).permit(:name,:content,:quiz,:assignment)
+  end
+  def current_user
+    current_student || current_instructor
   end
 end
