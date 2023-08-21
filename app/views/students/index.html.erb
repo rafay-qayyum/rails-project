@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../assets/stylesheets/student_new.css">
+    <title>Course Page</title>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="#">Courses</a></li>
+            <li><a href="#">Enrolled Courses</a></li>
+            <li><a href="<%=edit_student_registration_path %>">Account Settings</a></li>
+            <li><%= link_to "Logout",destroy_student_session_path , data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "Are you sure?"
+                } %> </li>
+
+        </ul>
+    </nav>
+    <main>
+        <section class="course-section">
+            <h2>Your Courses</h2>
+            <div class="course-cards">
+                <!-- Course cards will be dynamically generated here -->
+            </div>
+        </section>
+        <section class="recommended-section">
+            <h2>Recommended Courses</h2>
+            <div class="course-cards">
+                <!-- Recommended course cards will be dynamically generated here -->
+            </div>
+        </section>
+    </main>
+</body>
+</html>
