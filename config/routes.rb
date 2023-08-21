@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     resources :courses, only: [:index]
   end
   resources :courses do
-    resources :chapters, only: [:index,:show,:create,:new]
+    resources :chapters
   end
   resources :chapters do
     resources :chapter_results, only: [:create,:new]
@@ -28,7 +28,7 @@ Rails.application.routes.draw do
   resources :posts, only: [:create,:destroy]
   resources :comments, only: [:create,:destroy]
   resources :instructors do
-    resources :courses, only: [:create,:new]
+    resources :courses
   end
   resources :chapters do
     resources :chapter_results, only: [:create,:new]

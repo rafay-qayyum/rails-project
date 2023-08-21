@@ -4,6 +4,12 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+
+    can :manage, Course if user.present? && user.instructor?
+    can :manage , Chapter if user.present? && user.instructor?
+    can :read , Chapter if user.present? && user.student?
+    can :read, Course if user.present? && user.student?
+
     # Define abilities for the user here. For example:
     #
     #   return unless user.present?

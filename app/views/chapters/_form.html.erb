@@ -1,0 +1,33 @@
+<% if chapter.errors.any? %>
+  <% chapter.errors.full_messages.each do |message|%>
+  <h4><%= message %> </h4>
+  <%end%>
+<%end%><br>
+  <div class="create-chapter">
+    <h1>Create a New Chapter</h1>
+    <%= form_for chapter, html: { multipart: true } do |f| %>
+      <div class="form-group">
+        <%= f.label :name %>
+        <%= f.text_field :name, required: true %>
+      </div>
+      <div class="form-group">
+        <%= f.label :content %>
+        <%= f.text_area :content, rows: 6, required: true %>
+      </div>
+      <div class="form-group">
+        <%= f.label :quiz %>
+        <%= f.file_field :quiz, required: true, accept: 'application/pdf' %>
+                <% if chapter.quiz.attached? %>
+          <p>Quiz: <%= link_to chapter.quiz.filename, chapter.quiz %></p>
+        <% end %>
+      </div>
+      <div class="form-group">
+        <%= f.label :assignment %>
+        <%= f.file_field :assignment, required: true, accept: 'application/pdf' %>
+                <% if chapter.assignment.attached? %>
+          <p>Assignment: <%= link_to chapter.assignment.filename, chapter.assignment %></p>
+        <% end %>
+      </div>
+      <%= f.hidden_field :course_id, :value => course %>
+      <%= f.submit "Create Chapter", class: "btn-primary" %>
+    <% end %>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= @chapter.name %> Details</title>
+  <%= stylesheet_link_tag 'chapter_show.css' %>
+</head>
+<body>
+  <div class="chapter-details">
+    <h1><%= @chapter.name %> Details</h1>
+    <div class="chapter-content">
+      <h2>Content:</h2>
+      <p><%= @chapter.content %></p>
+    </div>
+    <div class="chapter-files">
+      <h2>Chapter Files:</h2>
+      <div class="file-links">
+        <% if @chapter.quiz.attached? %>
+          <a href="<%= url_for(@chapter.quiz) %>" download>Download Quiz</a>
+        <% end %>
+        <% if @chapter.assignment.attached? %>
+          <a href="<%= url_for(@chapter.assignment) %>" download>Download Assignment</a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+    <br><br><br><br><br><br><br><br><br>
+    <div>
+
+          <%= link_to "Back to Course", course_path(@chapter.course), class:"button"%>
+        <%= link_to "Edit Chapter",  edit_course_chapter_path(@chapter.course,@chapter), class:"button" %>
+        <%= link_to "Delete Chapter", course_chapter_path(@chapter.course,@chapter), class:"button", data: { 'turbo-method': :delete}%>
+    </div>
+</body>
+</html>
+
