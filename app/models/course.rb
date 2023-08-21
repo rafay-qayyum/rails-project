@@ -1,4 +1,5 @@
 class Course < ApplicationRecord
+  before_validation { self.total_chapters = 0}
   belongs_to :instructor
   has_one_attached :image
   has_many :posts, dependent: :destroy
@@ -8,8 +9,8 @@ class Course < ApplicationRecord
   has_many :chapter_results, through: :chapters
 
   validates :total_chapters, presence: true, numericality: { only_integer: true , greater_than_or_equal_to: 0 }#, default: 0
-  validates :title, presence: true, length: { minimum: 10 , maximum: 60 }
-  validates :description, presence: true, length: {minimum: 50, maximum: 500}
+  validates :title, presence: true, length: { minimum: 5 , maximum: 60 }
+  validates :description, presence: true, length: {minimum: 5, maximum: 500}
   validates :price, presence: true
   validates :language, presence: true
   validates :requirements, presence: true, length: {minimum:0, maximum:400}
