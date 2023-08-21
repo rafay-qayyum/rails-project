@@ -1,4 +1,6 @@
 class InstructorsController < ApplicationController
-  def index
+  def show
+    @instructor = Instructor.find(current_instructor.id)
+    @courses = @instructor.courses
   end
 end

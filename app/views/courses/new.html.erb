@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Course</title>
+  <%= stylesheet_link_tag "course_new.css" %>
+</head>
+<body>
+
+    <% if @course.errors.any? %>
+  <% @course.errors.full_messages.each do |message|%>
+  <h4><%= message %> </h4>
+  <%end%>
+<%end%><br>
+
+
+  <div class="create-course">
+    <h1>Create a New Course</h1>
+    <%= form_for @course, html: { multipart: true } do |f| %>
+      <div class="form-group">
+        <%= f.label :title %>
+        <%= f.text_field :title, required: true%>
+      </div>
+      <div class="form-group">
+        <%= f.label :description %>
+        <%= f.text_area :description, rows: 4, required: true %>
+      </div>
+      <div class="form-group">
+        <%= f.label :price %>
+        <%= f.number_field :price, step: 0.01, required: true %>
+      </div>
+      <div class="form-group">
+        <%= f.label :language %>
+        <%= f.text_field :language, required: true %>
+      </div>
+      <div class="form-group">
+        <%= f.label :requirements %>
+        <%= f.text_area :requirements, rows: 4, required: true %>
+      </div>
+      <div class="form-group">
+        <%= f.label :image %>
+        <%= f.file_field :image %>
+      </div>
+      <%= f.submit "Create Course", class: "btn-primary" %>
+    <% end %>
+  </div>
+</body>
+</html>
