@@ -11,7 +11,11 @@
         <ul>
             <li><a href="#">All Courses</a></li>
             <li><a href="#">Create Course</a></li>
-            <li><a href="#">Account Settings</a></li>
+            <li><a href="<%=edit_instructor_registration_path%>">Account Settings</a></li>
+            <li><%= link_to "Logout",destroy_student_session_path , data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "Are you sure?"
+                } %> </li>
         </ul>
     </nav>
     <h2> Welcome <%= current_instructor.name %>!</h2>
