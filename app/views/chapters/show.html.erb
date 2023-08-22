@@ -23,11 +23,13 @@
     </div>
   </div>
     <br><br><br><br><br><br><br><br><br>
-  <div>
-    <%= link_to "Back to Course", course_path(@chapter.course), class:"button"%>
-    <%= link_to "Edit Chapter",  edit_course_chapter_path(@chapter.course,@chapter), class:"button" %>
-    <%= link_to "Delete Chapter", course_chapter_path(@chapter.course,@chapter), class:"button", data: { 'turbo-method': :delete}%>
-  </div>
+    <div>
+      <%= link_to "Back to Course", course_path(@chapter.course), class:"button"%>
+      <% if can? :manage, @chapter %>
+        <%= link_to "Edit Chapter",  edit_course_chapter_path(@chapter.course,@chapter), class:"button" %>
+        <%= link_to "Delete Chapter", course_chapter_path(@chapter.course,@chapter), class:"button", data: { 'turbo-method': :delete}%>
+      <% end %>
+    </div>
 </body>
 
 

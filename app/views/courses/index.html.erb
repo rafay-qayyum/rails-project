@@ -1,0 +1,19 @@
+<html>
+<head>
+  <title>Courses</title>
+  <%= stylesheet_link_tag "instructor_show.css" %>
+</head>
+<body>
+    <h1>All Courses</h1>
+    <main class="course-list">
+        <% @courses.each do |course| %>
+        <div class="course-card">
+          <%= image_tag course.image, alt: course.title %>
+          <h2><%=link_to course.title, course_path(course) %></h2>
+        </div>
+      <% end %>
+    </main>
+      <%=link_to "Back", authenticated_instructor_root_path, class:"button"%>
+</body>
+</html>
+

@@ -24,7 +24,7 @@ class Student < ApplicationRecord
 
   # Ransack
   def self.ransackable_attributes(auth_object=nil)
-    ["created_at","email","id","is_suspended","name", "remember_created_at", "reset_password_sent_at", "reset_password_token", "updated_at" ]
+    ["email", "is_suspended", "name", "updated_at", "created_at", "remember_created_at", "reset_password_sent_at", "reset_password_token", "encrypted_password"]
   end
 
   # Ransack
@@ -32,6 +32,9 @@ class Student < ApplicationRecord
     ["chapter_results", "courses", "enrollments", "posts", "replies"]
   end
 
+  def is?( requested_role )
+    :student.to_s == requested_role.to_s
+  end
 private
   # set default values
   def set_defaults

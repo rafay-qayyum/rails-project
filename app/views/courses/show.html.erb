@@ -1,38 +1,55 @@
-<!-- app/views/courses/show.html.erb -->
-
-<!DOCTYPE html>
-<html>
 <head>
   <title><%= @course.title %></title>
   <%= stylesheet_link_tag 'show_course.css' %>
 </head>
 <body>
-  <div class="course-container">
+    <div class="course-container">
+
     <div class="course-header">
       <h1><%= @course.title %></h1>
       <p class="instructor">Instructor: <%= @course.instructor.name %></p>
     </div>
+
     <div class="course-details">
       <div class="course-description">
         <p><%= @course.description %></p>
       </div>
+
       <div class="course-image">
         <%= image_tag @course.image %>
       </div>
     </div>
+
     <div class="course-info">
       <p class="price">Price: <%= number_to_currency(@course.price) %></p>
       <p class="language">Language: <%= @course.language %></p>
       <p class="requirements">Requirements: <%= @course.requirements %></p>
     </div>
+
     <div class="chapters">
       <h2>Chapters</h2>
       <ul>
         <% @course.chapters.each do |chapter| %>
-          <li><%=link_to chapter.name, course_chapter_path(@course, chapter) %></li>
+          <% if can? :read, chapter %>
+            <li><%=link_to chapter.name, course_chapter_path(@course, chapter) %></li>
+          <% else %>
+            <li><%= chapter.name %></li>
+          <% end %>
         <% end %>
       </ul>
+        <%if can? :manage, @course%>
+          <%= link_to "Create New Chapter", new_course_chapter_path(@course), class: "btn-primary" %>
+        <%end%>
     </div>
+
   </div>
+  <br><br>
+
+  <% if can? :manage, @course %>
+      <%= link_to "Back to Course Catalog", authenticated_instructor_root_path, class:"button"%>
+      <%= link_to "Edit Course", edit_instructor_course_path(@course.instructor,@course), class:"button" %>
+      <%= link_to "Delete Course", instructor_course_path(@course.instructor,@course), class:"button", data: { 'turbo-method': :delete, turbo_confirm: "Are you sure?" }%>
+  <% else %>
+      <%= link_to "Back to Course Catalog", authenticated_instructor_root_path, class:"button"%>
+  <% end %>
 </body>
-</html>

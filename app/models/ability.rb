@@ -5,10 +5,29 @@ class Ability
 
   def initialize(user)
 
-    can :manage, Course if user.present? && user.instructor?
-    can :manage , Chapter if user.present? && user.instructor?
-    can :read , Chapter if user.present? && user.student?
-    can :read, Course if user.present? && user.student?
+    # if user is not logged in, redirect to login page
+    if user.blank?
+      cannot :manage, :all
+      return
+    end
+
+    if user.is? :admin
+      can :manage, :all
+    end
+
+
+
+    if user.is? :instructor
+      can :manage, Course, instructor_id: user.id
+      can :manage, Chapter, course: {instructor_id: user.id}
+      can :manage, Instructor, id: user.id
+    end
+
+    if user.is? :student
+      can :read, Course
+      can :read, Instructor
+      can :manage, Student, id: user.id
+    end
 
     # Define abilities for the user here. For example:
     #
