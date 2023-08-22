@@ -1,7 +1,16 @@
 class Post < ApplicationRecord
+
+  # Associations
+  has_many :replies, dependent: :destroy
   belongs_to :course
   belongs_to :poster, polymorphic: true
-  validates :content, presence: true, length: {minimum:5, maximum:200 }
+
+  # Validations
+  validates :content, presence: true, length: { minimum:5, maximum:200 }
+  validates :course_id, presence: true, numericality: { only_integer: true }
+  validates :poster_id, presence: true, numericality: { only_integer: true }
+
+  # Ransack
   def self.ransackable_attributes(auth_object = nil)
     ["content", "course_id", "created_at", "id", "poster_id", "poster_type", "updated_at"]
   end

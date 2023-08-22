@@ -1,17 +1,42 @@
 class ChaptersController < ApplicationController
   load_and_authorize_resource
   def index
-    @chapters=Chapter.find(params[:course_id])
+    @course = Course.find(params[:course_id])
+    @chapters = @course.chapters
   end
+
   def show
-    @chapter=Chapter.find(params[:id])
+    begin
+      @course = Course.find(params[:course_id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:alert] = "The course you are looking for could not be found"
+      redirect_to instructor_path(current_instructor)
+    end
+    begin
+      @chapter = @course.chapters.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:alert] = "The chapter you are looking for could not be found"
+      redirect_to course_path(@course)
+    end
   end
+
   def new
-    @course=Course.find(params[:course_id])
+    begin
+      @course = Course.find(params[:course_id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:alert] = "The course you are looking for could not be found"
+      redirect_to instructor_path(current_instructor)
+    end
     @chapter = @course.chapters.new
   end
+
   def create
-    @course=Course.find(params[:chapter][:course_id])
+    begin
+      @course = Course.find(params[:chapter][:course_id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:alert] = "The course you are looking for could not be found"
+      redirect_to instructor_path(current_instructor)
+    end
     @chapter = @course.chapters.create(chapter_params)
     if @chapter.save
       flash[:notice] = "Chapter created successfully"
@@ -21,13 +46,29 @@ class ChaptersController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
+
   def edit
-    @chapter = Chapter.find(params[:id])
-    @course = Course.find(params[:course_id])
+    begin
+      @course = Course.find(params[:course_id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:alert] = "The course you are looking for could not be found"
+      redirect_to instructor_path(current_instructor)
+    end
+    begin
+      @chapter = @course.chapters.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:alert] = "The chapter you are looking for could not be found"
+      redirect_to course_path(@course)
+    end
   end
 
   def update
-    @chapter = Chapter.find(params[:id])
+    begin
+      @chapter = Chapter.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:alert] = "The chapter you are looking for could not be found"
+      redirect_to course_path(@course)
+    end
     if @chapter.update(chapter_params)
       flash[:notice] = "Chapter updated successfully"
       redirect_to course_path(@chapter.course_id)
@@ -36,16 +77,23 @@ class ChaptersController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
+
   def destroy
-    @chapter = Chapter.find(params[:id])
+    begin
+      @chapter = Chapter.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:alert] = "The chapter you are looking for could not be found"
+      redirect_to course_path(@course)
+    end
     @chapter.destroy
     redirect_to course_path(@chapter.course_id)
   end
 
-  private
+private
   def chapter_params
     params.require(:chapter).permit(:name,:content,:quiz,:assignment)
   end
+
   def current_user
     current_student || current_instructor
   end

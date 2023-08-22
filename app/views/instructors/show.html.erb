@@ -1,33 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="instructor_index.css">
     <title>Course Catalog</title>
 </head>
+
 <body>
     <nav class="navbar">
         <ul>
-            <li><%= link_to 'All Courses', courses_path %></li>
-            <li><%= link_to 'Create Course', new_instructor_course_path(@instructor) %></li>
-            <li><a href="<%=edit_instructor_registration_path%>">Account Settings</a></li>
-            <li><%= link_to "Logout",destroy_student_session_path , data: {
-                  turbo_method: :delete,
-                  turbo_confirm: "Are you sure?"
-                } %> </li>
+            <li> <%= link_to 'All Courses', courses_path %> </li>
+            <li> <%= link_to 'Create Course', new_instructor_course_path(@instructor) %>< /li>
+            <li> <% link_to "Account Settings", edit_instructor_registration_path %> </li>
+            <li> <%= link_to "Logout",destroy_student_session_path , data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %> </li>
         </ul>
     </nav>
+
     <h2> Welcome <%= current_instructor.name %>!</h2>
     <h1>Course Catalog</h1>
+
     <main class="course-list">
         <% @courses.each do |course| %>
-        <div class="course-card">
-          <%= image_tag course.image, alt: course.title %>
-          <h2><%=link_to course.title, course_path(course) %></h2>
-        </div>
-      <% end %>
+          <div class="course-card">
+            <%= image_tag course.image, alt: course.title %>
+            <h2><%=link_to course.title, course_path(course) %></h2>
+          </div>
+        <% end %>
     </main>
-    
+
 </body>
-</html>

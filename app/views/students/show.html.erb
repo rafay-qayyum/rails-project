@@ -1,24 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="student_new.css">
     <title>Course Page</title>
 </head>
+
 <body>
     <nav class="navbar">
         <ul>
-            <li><%= link_to 'All Courses', courses_path %></li>
-            <li><a href="#">Enrolled Courses</a></li>
-            <li><a href="<%=edit_student_registration_path %>">Account Settings</a></li>
-            <li><%= link_to "Logout",destroy_student_session_path , data: {
-                  turbo_method: :delete,
-                  turbo_confirm: "Are you sure?"
-                } %> </li>
+            <li> <%= link_to 'All Courses', courses_path %></li>
+            <li> <a href="#">Enrolled Courses</a></li>
+            <li> <% link_to "Account Settings", edit_student_registration_path %> </li>
+            <li> <%= link_to "Logout",destroy_student_session_path , data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %> </li>
 
         </ul>
     </nav>
+
     <main>
         <section class="course-section">
             <h2>Your Courses</h2>
@@ -34,4 +29,3 @@
         </section>
     </main>
 </body>
-</html>

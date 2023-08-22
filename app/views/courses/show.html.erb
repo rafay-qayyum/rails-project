@@ -1,8 +1,10 @@
+<!-- app/views/courses/show.html.erb -->
+
 <!DOCTYPE html>
 <html>
 <head>
   <title><%= @course.title %></title>
-  <%= stylesheet_link_tag "show_course.css" %>
+  <%= stylesheet_link_tag 'show_course.css' %>
 </head>
 <body>
   <div class="course-show">
@@ -15,17 +17,15 @@
       <% end %>
     </ul>
     <%if can? :manage, @course%>
-    <%= link_to "Create New Chapter", new_course_chapter_path(@course), class: "btn-primary" %>
+     <%= link_to "Create New Chapter", new_course_chapter_path(@course), class: "btn-primary" %>
     <%end%>
   </div>
   <br><br>
-  <%if can? :manage, @course %>
+  <% if can? :manage, @course %>
       <%= link_to "Back to Course Catalog", authenticated_instructor_root_path, class:"button"%>
-        <%= link_to "Edit Course", edit_instructor_course_path(@course.instructor,@course), class:"button" %>
-        <%= link_to "Delete Course", instructor_course_path(@course.instructor,@course), class:"button", data: { 'turbo-method': :delete}%>
-    <%else%>
-        <%= link_to "Back to Course Catalog", courses_path, class:"button"%>
-    <%end%>
-
+      <%= link_to "Edit Course", edit_instructor_course_path(@course.instructor,@course), class:"button" %>
+      <%= link_to "Delete Course", instructor_course_path(@course.instructor,@course), class:"button", data: { 'turbo-method': :delete}%>
+  <% else %>
+      <%= link_to "Back to Course Catalog", course_path, class:"button"%>
 </body>
 </html>
