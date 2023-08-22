@@ -32,13 +32,13 @@ class Student < ApplicationRecord
     ["chapter_results", "courses", "enrollments", "posts", "replies"]
   end
 
+  def is?( requested_role )
+    :student.to_s == requested_role.to_s
+  end
 private
   # set default values
   def set_defaults
     self.is_suspended = false
     self.name = self.email.split("@")[0]
-  end
-  def is?( requested_role )
-    :student.to_s == requested_role.to_s
   end
 end

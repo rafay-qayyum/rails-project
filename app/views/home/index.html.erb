@@ -15,16 +15,19 @@
 
   <ul>
       <li class="nav-item">
-        <a href="<%= about_path %>" class="nav-link" id="nav-link">About</a>
+        <%=link_to "About", about_path, class:"nav-link", id:"nav-link" %>
       </li>
+
       <li class="nav-item">
-        <a href="<%= new_student_registration_path %>" class="nav-link" id="nav-link">Sign Up</a>
+        <%= link_to "Sign Up", new_student_registration_path, class:"nav-link", id:"nav-link" %>
       </li>
+
       <li class="nav-item">
-        <a href="<%= new_student_session_path%>" class="nav-link" id="nav-link">Sign In</a>
+        <%= link_to "Login", new_student_session_path, class:"nav-link", id:"nav-link" %>
       </li>
+
       <li class="nav-item">
-        <a href="<%= new_instructor_registration_path %>" class="nav-link" id="nav-link">Instructor?</a>
+        <%= link_to "Instructor?", new_instructor_registration_path, class:"nav-link", id:"nav-link" %>
       </li>
   </ul>
 </body>

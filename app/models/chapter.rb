@@ -10,8 +10,9 @@ class Chapter < ApplicationRecord
   has_one :chapter_results, dependent: :destroy, :class_name => "ChapterResult"
 
   # Validations
-  validates :name, presence: true, length: {minimum:10, maximum: 50}
-  validates :content, presence: true, length: {minimum:40, maximum:800}
+  validates :name, presence: true, length: { minimum:10, maximum: 50 }
+  validates :content, presence: true, length: { minimum:40, maximum:800 }
+  validates :course_id, presence: true, numericality: { only_integer: true }
 
   # Ransack
   def self.ransackable_attributes(auth_object = nil)

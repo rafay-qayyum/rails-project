@@ -18,21 +18,23 @@ class Instructor < ApplicationRecord
   validates :is_suspended, inclusion: { in: [true, false] }
   validates :email, presence: true, uniqueness: true
   validates :encrypted_password, presence: true
-  
+
   # Ransack
   def self.ransackable_attributes(auth_object = nil)
     ["created_at", "email", "id", "is_suspended", "name", "remember_created_at", "reset_password_sent_at", "reset_password_token", "updated_at"]
   end
+
   def self.ransackable_associations(auth_object = nil)
     ["courses", "posts", "replies"]
   end
-  def set_defaults
-    self.is_suspended = false
-    self.name = self.email.split("@")[0]
-  end
-
 
   def is?( requested_role )
     :instructor.to_s == requested_role.to_s
+  end
+
+private
+  def set_defaults
+    self.is_suspended = false
+    self.name = self.email.split("@")[0]
   end
 end

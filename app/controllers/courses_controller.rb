@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :courses, through: :instructors
 
   def index
     @courses=Course.all

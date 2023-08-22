@@ -1,5 +1,7 @@
 class ChaptersController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :courses
+  load_and_authorize_resource :chapters, through: :courses
+
   def index
     @course = Course.find(params[:course_id])
     @chapters = @course.chapters
@@ -21,7 +23,6 @@ class ChaptersController < ApplicationController
   end
 
   def new
-    debugger
     begin
       @course = Course.find(params[:course_id])
     rescue ActiveRecord::RecordNotFound
@@ -90,12 +91,13 @@ class ChaptersController < ApplicationController
     redirect_to course_path(@chapter.course_id)
   end
 
-private
-  def chapter_params
-    params.require(:chapter).permit(:name,:content,:quiz,:assignment)
-  end
-
   def current_user
     current_student || current_instructor
+  end
+
+private
+
+  def chapter_params
+    params.require(:chapter).permit(:name,:content,:quiz,:assignment)
   end
 end

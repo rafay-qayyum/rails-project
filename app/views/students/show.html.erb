@@ -8,7 +8,7 @@
         <ul>
             <li> <%= link_to 'All Courses', courses_path %></li>
             <li> <a href="#">Enrolled Courses</a></li>
-            <li> <% link_to "Account Settings", edit_student_registration_path %> </li>
+            <li> <%= link_to "Account Settings", edit_student_registration_path %> </li>
             <li> <%= link_to "Logout",destroy_student_session_path , data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %> </li>
 
         </ul>
@@ -21,6 +21,7 @@
                 <!-- Course cards will be dynamically generated here -->
             </div>
         </section>
+        
         <section class="recommended-section">
             <h2>Recommended Courses</h2>
             <div class="course-cards">
