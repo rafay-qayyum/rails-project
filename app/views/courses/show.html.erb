@@ -1,20 +1,20 @@
-<!DOCTYPE html>
-<html>
 <head>
   <title><%= @course.title %></title>
   <%= stylesheet_link_tag "show_course.css" %>
 </head>
+
 <body>
   <div class="course-show">
     <h1><%= @course.title %></h1>
     <p><%= @course.description %></p>
     <h2>Chapters</h2>
+
     <ul class="chapters-list">
       <% @course.chapters.each do |chapter| %>
-        <li><%= link_to chapter.title, course_chapter_path(@course, chapter) %></li>
+        <li><%= link_to chapter.name, course_chapter_path(@course, chapter) %></li>
       <% end %>
     </ul>
+
     <%= link_to "Create New Chapter", new_course_chapter_path(@course), class: "btn-primary" %>
   </div>
 </body>
-</html>
