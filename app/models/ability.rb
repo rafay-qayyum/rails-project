@@ -18,6 +18,8 @@ class Ability
       can :read, Chapter
       can :read, Instructor
       can :manage, Student, id: user.id
+      can :create , Enrollment
+      can :destroy , Enrollment, student_id: user.id
     end
 
     # Define abilities for the user here. For example:

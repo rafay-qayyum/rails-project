@@ -1,4 +1,5 @@
 class Enrollment < ApplicationRecord
+  before_validation :set_defaults, on: :create
   belongs_to :student
   belongs_to :course
 
@@ -8,5 +9,9 @@ class Enrollment < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     ["chapters_completed", "course_id", "created_at", "grade", "id", "student_id", "updated_at"]
   end
-
+private
+def set_defaults
+  self.chapters_completed = 0
+  self.grade = "F"
+end
 end

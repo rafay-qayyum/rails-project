@@ -15,7 +15,14 @@
       <% end %>
     </ul>
     <%if can? :manage, @course%>
-    <%= link_to "Create New Chapter", new_course_chapter_path(@course), class: "btn-primary" %>
+    <%= link_to "Create New Chapter", new_course_chapter_path(@course), class:"button"%>
+    <%end%>
+    <%if can? :create, Enrollment%>
+
+    <%= button_to "Enroll", course_enrollments_path(course_id: @course,student_id: current_student), class:"button", method: :post %>
+    <%end%>
+    <% if can? :destory , @enrollment%>
+    <%= link_to "Unenroll", course_enrollment_path(course_id: @course, id: @enrollment,student_id: current_student), method: :delete, class:"button" %>
     <%end%>
   </div>
   <br><br>
