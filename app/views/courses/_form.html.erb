@@ -1,41 +1,48 @@
 
 <% if course.errors.any? %>
   <% course.errors.full_messages.each do |message|%>
-  <h4><%= message %> </h4>
+    <h4><%= message %> </h4>
   <%end%>
 <%end%><br>
 
 
-  <div class="create-course">
-    <h1>Create a New Course</h1>
-    <%= form_for course, html: { multipart: true } do |f| %>
-      <div class="form-group">
-        <%= f.label :title %>
-        <%= f.text_field :title, required: true%>
-      </div>
-      <div class="form-group">
-        <%= f.label :description %>
-        <%= f.text_area :description, rows: 4, required: true %>
-      </div>
-      <div class="form-group">
-        <%= f.label :price %>
-        <%= f.number_field :price, step: 0.01, required: true %>
-      </div>
-      <div class="form-group">
-        <%= f.label :language %>
-        <%= f.text_field :language, required: true %>
-      </div>
-      <div class="form-group">
-        <%= f.label :requirements %>
-        <%= f.text_area :requirements, rows: 4, required: true %>
-      </div>
-      <div class="form-group">
-        <%= f.label :image %>
-        <%= f.file_field :image, required: true, accept: 'image/png, image/jpeg, image/jpg' %>
-        <% if @course.image.attached? %>
-          <p>Image: <%= link_to @course.image.filename, @course.image %></p>
-        <% end %>
-      </div>
-      <%= f.submit "Submit", class: "btn-primary" %>
-    <% end %>
-  </div>
+<div class="create-course">
+  <h1>Create a New Course</h1>
+  <%= form_for course, html: { multipart: true } do |f| %>
+
+    <div class="form-group">
+      <%= f.label :title %>
+      <%= f.text_field :title, required: true%>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :description %>
+      <%= f.text_area :description, rows: 4, required: true %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :price %>
+      <%= f.number_field :price, step: 0.01, required: true %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :language %>
+      <%= f.text_field :language, required: true %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :requirements %>
+      <%= f.text_area :requirements, rows: 4, required: true %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :image %>
+      <%= f.file_field :image, required: true, accept: 'image/png, image/jpeg, image/jpg' %>
+      <% if @course.image.attached? %>
+        <p>Image: <%= link_to @course.image.filename, @course.image %></p>
+      <% end %>
+    </div>
+    
+    <%= f.submit "Submit", class: "btn-primary" %>
+  <% end %>
+</div>

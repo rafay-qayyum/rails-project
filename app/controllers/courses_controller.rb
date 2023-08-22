@@ -1,11 +1,12 @@
 class CoursesController < ApplicationController
   def new
-    @instructor = Instructor.find(current_instructor.id)
+    @instructor = current_instructor
     @course = @instructor.courses.new
   end
+
   def create
-    @instructor = Instructor.find(current_instructor.id)
-    @course=@instructor.courses.create(course_params)
+    @instructor = current_instructor
+    @course = @instructor.courses.create(course_params)
     if @course.save
       flash[:notice] = "Course created successfully"
       redirect_to instructor_path(@instructor)
@@ -14,14 +15,32 @@ class CoursesController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
+
   def show
-    @course = Course.find(params[:id])
+    begin
+      @course = Course.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:alert] = "The course you are looking for could not be found"
+      redirect_to instructor_path(current_instructor)
+    end
   end
+
   def edit
-    @course = Course.find(params[:id])
+    begin
+      @course = Course.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:alert] = "The course you are looking for could not be found"
+      redirect_to instructor_path(current_instructor)
+    end
   end
+
   def update
-    @course = Course.find(params[:id])
+    begin
+      @course = Course.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:alert] = "The course you are looking for could not be found"
+      redirect_to instructor_path(current_instructor)
+    end
     if @course.update(course_params)
       flash[:notice] = "Course updated successfully"
       redirect_to course_path(@course)
@@ -30,11 +49,18 @@ class CoursesController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
+
   def destroy
+  begin
     @course = Course.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    flash[:alert] = "The course you are looking for could not be found"
+    redirect_to instructor_path(current_instructor)
+  end
     @course.destroy
     redirect_to instructor_path(current_instructor)
   end
+
 private
   def course_params
     params.require(:course).permit(:title,:description,:price,:language,:requirements,:image)
