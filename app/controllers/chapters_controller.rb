@@ -21,6 +21,7 @@ class ChaptersController < ApplicationController
   end
 
   def new
+    debugger
     begin
       @course = Course.find(params[:course_id])
     rescue ActiveRecord::RecordNotFound

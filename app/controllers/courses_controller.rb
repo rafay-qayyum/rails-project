@@ -1,8 +1,10 @@
 class CoursesController < ApplicationController
   load_and_authorize_resource
+
   def index
     @courses=Course.all
   end
+
   def new
     @instructor = current_instructor
     @course = @instructor.courses.new
@@ -55,12 +57,12 @@ class CoursesController < ApplicationController
   end
 
   def destroy
-  begin
-    @course = Course.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    flash[:alert] = "The course you are looking for could not be found"
-    redirect_to instructor_path(current_instructor)
-  end
+    begin
+      @course = Course.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:alert] = "The course you are looking for could not be found"
+      redirect_to instructor_path(current_instructor)
+    end
     @course.destroy
     redirect_to instructor_path(current_instructor)
   end
@@ -69,6 +71,7 @@ private
   def course_params
     params.require(:course).permit(:title,:description,:price,:language,:requirements,:image)
   end
+
   def current_user
     current_student || current_instructor
   end
