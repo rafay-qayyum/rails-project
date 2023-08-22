@@ -23,11 +23,12 @@ class CoursesController < ApplicationController
   end
 
   def show
+    debugger
     begin
       @course = Course.find(params[:id])
     rescue ActiveRecord::RecordNotFound
       flash[:alert] = "The course you are looking for could not be found"
-      redirect_to instructor_path(current_instructor)
+      redirect_to root_path(current_user)
     end
   end
 

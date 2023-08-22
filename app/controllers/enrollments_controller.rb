@@ -1,13 +1,12 @@
 class EnrollmentsController < ApplicationController
   def create
-    debugger
-    @enrollment = Enrollment.new(enrollment_params)
+    @enrollment = current_user.enrollments.new(enrollment_params)
     if @enrollment.save
       flash[:notice] = "Enrollment created successfully"
       redirect_to course_path(@enrollment.course_id)
     else
       flash[:alert] = "Enrollment not created successfully"
-      render 'courses/show'
+      render 'courses/show', status: :unprocessable_entity
     end
   end
   def destroy

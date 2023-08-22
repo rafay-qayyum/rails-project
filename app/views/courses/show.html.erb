@@ -52,4 +52,7 @@
   <% else %>
       <%= link_to "Back to Course Catalog", authenticated_instructor_root_path, class:"button"%>
   <% end %>
+  <% if can? :create, Enrollment %>
+    <%= link_to "Enroll", course_enrollments_path(@course), class:"button", data: { 'turbo-method': :post }%>
+  <% end %>
 </body>
