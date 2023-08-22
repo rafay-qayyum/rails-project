@@ -2,19 +2,23 @@
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
+
   <%if resource.image.attached?%>
-  <%= image_tag(resource.image) %>
+    <%= image_tag(resource.image) %>
   <%end%>
-    <div class="field">
+
+  <div class="field">
     <%= f.label :image %>
     <%= f.file_field :image, accept: 'image/png, image/jpeg' %>
   </div>
   <br>
-    <div class="field">
+
+  <div class="field">
     <%= f.label :name %>
     <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
   </div>
   <br>
+
   <div class="field">
     <%= f.label :email %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
@@ -24,6 +28,7 @@
     <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
   <% end %>
   <br>
+
   <div class="field">
     <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
     <%= f.password_field :password, autocomplete: "new-password" %>
@@ -32,11 +37,13 @@
     <% end %>
   </div>
   <br>
+
   <div class="field">
     <%= f.label :password_confirmation %>
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
   <br>
+
   <div class="field">
     <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
     <%= f.password_field :current_password, autocomplete: "current-password" %>
