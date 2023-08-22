@@ -1,6 +1,6 @@
 class InstructorsController < ApplicationController
   def show
-    @instructor = Instructor.find(current_instructor.id)
+    @instructor = current_instructor
     @courses = @instructor.courses
   end
 end

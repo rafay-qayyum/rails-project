@@ -1,93 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <%=stylesheet_link_tag "index.css" %>
+  <title>Elearning</title>
+</head>
 
-    <!-- Web page CSS -->
-    <%=stylesheet_link_tag "index.css" %>
+<body>
+  <!-- Navbar -->
+  <nav>
+      <a href="<%= root_path%>" class="logo">
+          <h1>
+          <span class="title">Elearning </span>
+          </h1>
+      </a>
+  </nav>
 
-    <!-- Simple lightbox CSS -->
-    <link rel="stylesheet" href="assets/css/simple-lightbox.min.css" />
+  <ul>
+      <li class="nav-item">
+        <%=link_to "About", about_path, class:"nav-link", id:"nav-link" %>
+      </li>
 
-    <!-- Favicons -->
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="assets/icons/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="assets/icons/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="assets/icons/favicon-16x16.png"
-    />
+      <li class="nav-item">
+        <%= link_to "Sign Up", new_student_registration_path, class:"nav-link", id:"nav-link" %>
+      </li>
 
-    <title>Elearning</title>
-  </head>
-  <body>
-    <!-- Navbar -->
-    <nav>
-        <a href="<%= root_path%>" class="logo">
-            <h1>
-            <span class="title">Elearning </span>
-            </h1>
-        </a>
-    </nav>
-    <ul>
-        <li class="nav-item">
-          <a href="<%= about_path %>" class="nav-link" id="nav-link">About</a>
-        </li>
-        <li class="nav-item">
-          <a href="<%= new_student_registration_path %>" class="nav-link" id="nav-link">Sign Up</a>
-        </li>
-        <li class="nav-item">
-          <a href="<%= new_student_session_path%>" class="nav-link" id="nav-link"
-            >Sign In</a
-          >
-        </li>
-        <li class="nav-item">
-          <a href="<%= new_instructor_registration_path %>" class="nav-link" id="nav-link">Instructor?</a>
-        </li>
-    </ul>
-    <!-- Dark/light theme switcher -->
+      <li class="nav-item">
+        <%= link_to "Login", new_student_session_path, class:"nav-link", id:"nav-link" %>
+      </li>
 
-    <!-- Bars -->
+      <li class="nav-item">
+        <%= link_to "Instructor?", new_instructor_registration_path, class:"nav-link", id:"nav-link" %>
+      </li>
+  </ul>
+</body>
 
-    <!-- Hero section -->
-
-    <!-- About section -->
-
-    <!-- Lightbox image gallery -->
-
-    <!-- Jab TV Stakeholders -->
-
-    <!-- Email subscription -->
-
-    <!-- Social icons -->
-
-    <!-- Scroll to top button -->
-
-    <!-- Web page script -->
-    <script src="assets/js/app.js"></script>
-
-    <!-- Ion icons CDN -->
-    <script
-      type="module"
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-    ></script>
-
-    <!-- Simple lightbox -->
-    <script src="assets/js/simple-lightbox.min.js"></script>
-    <script>
-      // Simple lightbox initializer
-    </script>
-  </body>
-</html>
