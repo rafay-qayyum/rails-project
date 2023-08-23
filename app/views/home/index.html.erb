@@ -1,34 +1,9 @@
 <head>
-  <%=stylesheet_link_tag "index.css" %>
-  <title>Elearning</title>
+  <title style= "body, h2, h1, div, label, input, form, em {
+  margin: 0;
+  padding: 0;
+}">Elearning</title>
 </head>
 
-<body>
-  <!-- Navbar -->
-  <nav>
-      <a href="<%= root_path%>" class="logo">
-          <h1>
-          <span class="title">Elearning </span>
-          </h1>
-      </a>
-  </nav>
 
-  <ul>
-      <li class="nav-item">
-        <%=link_to "About", about_path, class:"nav-link", id:"nav-link" %>
-      </li>
-
-      <li class="nav-item">
-        <%= link_to "Sign Up", new_student_registration_path, class:"nav-link", id:"nav-link" %>
-      </li>
-
-      <li class="nav-item">
-        <%= link_to "Login", new_student_session_path, class:"nav-link", id:"nav-link" %>
-      </li>
-
-      <li class="nav-item">
-        <%= link_to "Instructor?", new_instructor_registration_path, class:"nav-link", id:"nav-link" %>
-      </li>
-  </ul>
-</body>
 

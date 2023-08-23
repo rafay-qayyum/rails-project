@@ -23,7 +23,6 @@ class CoursesController < ApplicationController
   end
 
   def show
-    debugger
     begin
       @course = Course.find(params[:id])
     rescue ActiveRecord::RecordNotFound
