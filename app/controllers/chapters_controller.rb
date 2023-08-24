@@ -8,7 +8,8 @@ class ChaptersController < ApplicationController
   end
 
   def show
-
+    @has_submitted = ChapterResult.where(student_id: current_user.id, course_id: params[:course_id], chapter_id: params[:id]).present?
+    @curr_user = current_user
   end
 
   def new

@@ -5,9 +5,11 @@ class ChapterResultsController < ApplicationController
       flash[:alert] = "You have already attempted this chapter"
       redirect_to course_chapter_path(params[:course_id], params[:chapter_id])
     else
+      @enrollment=current_user.enrollments.where(course_id: params[:course_id]).first
+      @enrollment[:chapters_completed] += 1
       @chapter = Chapter.where(id: params[:chapter_id], course_id: params[:course_id]).first
       @chapter_result = ChapterResult.create(chapter_result_params.merge!({student_id: current_user.id})) if @chapter.present?
-      if @chapter_result.save
+      if @chapter_result.save and @enrollment.save
         flash[:notice] = "Chapter result created successfully"
         redirect_to course_chapter_path(@chapter.course_id, @chapter.id)
       else
