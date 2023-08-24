@@ -18,8 +18,9 @@ class Ability
 
     if user.is? :instructor
       can :manage, Course, instructor_id: user.id
-      can :manage, Chapter, course: {instructor_id: user.id}
+      can :manage, Chapter, course: { instructor_id: user.id }
       can :manage, Instructor, id: user.id
+      can :read, Course
     end
 
     if user.is? :student
