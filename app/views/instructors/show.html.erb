@@ -1,28 +1,15 @@
 <head>
-    <%= stylesheet_link_tag "instructor_show.css" %>
-    <title>Course Catalog</title>
+  <%= stylesheet_link_tag "instructor_index" %>
+  <title>Course Catalog</title>
 </head>
-
 <body>
-    <nav class="navbar">
-        <ul>
-            <li> <%= link_to 'All Courses', courses_path %> </li>
-            <li> <%= link_to 'Create Course', new_instructor_course_path(@instructor) %></li>
-            <li> <%= link_to "Account Settings", edit_instructor_registration_path %> </li>
-            <li> <%= link_to "Logout",destroy_student_session_path , data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %> </li>
-        </ul>
-    </nav>
-
-    <h2> Welcome <%= current_instructor.name %>!</h2>
-    <h1>Course Catalog</h1>
-
+    <h2 class="welcome-message"> Welcome <%= current_instructor.name %>!</h2>
+    <h1 class="page-title">Course Catalog</h1>
     <main class="course-list">
-        <% @courses.each do |course| %>
-          <div class="course-card">
-            <%= image_tag course.image, alt: course.title %>
-            <h2><%=link_to course.title, course_path(course) %></h2>
-          </div>
+        <% if @courses.empty? %>
+        <h2 class="no-courses">No courses yet</h2>
+        <% else %>
+        <%= render partial: "layouts/courses_show", collection: @courses, as: :course %>
         <% end %>
     </main>
-
 </body>

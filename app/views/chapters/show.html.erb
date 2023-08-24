@@ -5,13 +5,15 @@
 
 <body>
   <div class="chapter-details">
-    <h1><%= @chapter.name %> Details</h1>
+    <h1 class="chapter-name"><%= @chapter.name %> Details</h1>
+
     <div class="chapter-content">
-      <h2>Content:</h2>
-      <p><%= @chapter.content %></p>
+      <h2 class="headings">Content:</h2>
+      <p class="content"><%= @chapter.content %></p>
     </div>
+
     <div class="chapter-files">
-      <h2>Chapter Files:</h2>
+      <h2 class="headings">Chapter Files:</h2>
       <div class="file-links">
         <% if @chapter.quiz.attached? %>
           <a href="<%= url_for(@chapter.quiz) %>" download>Download Quiz</a>
@@ -22,14 +24,15 @@
       </div>
     </div>
   </div>
-    <br><br><br><br><br><br><br><br><br>
-    <div>
-      <%= link_to "Back to Course", course_path(@chapter.course), class:"button"%>
-      <% if can? :manage, @chapter %>
-        <%= link_to "Edit Chapter",  edit_course_chapter_path(@chapter.course,@chapter), class:"button" %>
-        <%= link_to "Delete Chapter", course_chapter_path(@chapter.course,@chapter), class:"button", data: { 'turbo-method': :delete}%>
-      <% end %>
-    </div>
+
+  <br><br><br><br><br><br><br><br><br>
+  <div>
+    <%= link_to "Back to Course", course_path(@chapter.course), class:"button"%>
+    <% if can? :manage, @chapter %>
+      <%= link_to "Edit Chapter",  edit_course_chapter_path(@chapter.course,@chapter), class:"button" %>
+      <%= link_to "Delete Chapter", course_chapter_path(@chapter.course,@chapter), class:"button", data: { 'turbo-method': :delete}%>
+    <% end %>
+  </div>
 </body>
 
 

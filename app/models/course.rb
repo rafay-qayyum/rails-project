@@ -1,7 +1,11 @@
 class Course < ApplicationRecord
 
   # Callbacks
-  before_validation { self.total_chapters = 0}
+  before_validation do
+    if self.new_record?
+      self.total_chapters = 0
+    end
+  end
 
   # Associations
   belongs_to :instructor

@@ -1,18 +1,54 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Elearning</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
+<head>
+  <title>E-Learning Platform</title>
+  <%= stylesheet_link_tag 'e_learning' %>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-  </head>
+</head>
+<body>
 
-  <body>
-       <p class="notice"><%= notice %></p>
-       <p class="alert"><%= alert %></p>
-    <%= yield %>
-  </body>
-</html>
+  <header>
+    <nav>
+      <a href="<%= root_path%>" class="logo">
+        <h1 class="title">
+          <span class="title">E-Learning</span>
+        </h1>
+      </a>
+        <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p>
+
+      <ul class="menu">
+        <% if instructor_signed_in? %>
+          <li><%= link_to "All Courses", courses_path %></li>
+          <li><%= link_to "Create Course", new_instructor_course_path(current_instructor) %></li>
+          <li><%= link_to "Account Settings", edit_instructor_registration_path %></li>
+          <li><%= link_to "Logout", destroy_instructor_session_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }%></li>
+        <% elsif student_signed_in? %>
+          <li><%= link_to "All Courses", courses_path %></li>
+          <li><a href="#">Enrolled Courses</a></li>
+          <li><%= link_to "Account Settings", edit_student_registration_path %></li>
+          <li><%= link_to "Logout", destroy_student_session_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }%></li>
+        <% else %>
+          <li><%= link_to "Signup", new_student_registration_path %></li>
+          <li><%= link_to "Login", new_student_session_path %></li>
+          <li><%= link_to "About", about_path %></li>
+          <li><%= link_to "Instructor", new_instructor_registration_path %></li>
+        <% end %>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container-layout">
+      <%= yield %>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container-layout">
+      <p>&copy; <%= Time.now.year %> E-Learning. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>

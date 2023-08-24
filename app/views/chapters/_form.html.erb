@@ -5,7 +5,7 @@
 <%end%><br>
 
 <div class="create-chapter">
-  <h1>Create a New Chapter</h1>
+  <h1 class="main-heading">Create a New Chapter</h1>
   <%= form_for chapter, html: { multipart: true } do |f| %>
 
     <div class="form-group">
@@ -33,7 +33,7 @@
         <p>Assignment: <%= link_to chapter.assignment.filename, chapter.assignment %></p>
       <% end %>
     </div>
-    
+
     <%= f.hidden_field :course_id, :value => course %>
     <%= f.submit "Create Chapter", class: "btn-primary" %>
   <% end %>
