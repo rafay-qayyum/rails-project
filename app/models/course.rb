@@ -29,5 +29,13 @@ class Course < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     ["created_at", "description", "id", "instructor_id", "language", "price", "requirements", "title", "total_chapters", "updated_at"]
   end
+
+  def progress(student)
+    if self.chapters.count > 0
+      student.enrollments.where(course_id: self.id).first.chapters_completed * 100.0 / self.chapters.count
+    else
+      0
+    end
+  end
 end
 

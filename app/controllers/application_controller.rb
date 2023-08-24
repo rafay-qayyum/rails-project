@@ -1,8 +1,12 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
-
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = "Access denied."
+    redirect_to root_url
+  end
+
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    flash[:alert] = "The page you requested does not exist."
     redirect_to root_url
   end
 

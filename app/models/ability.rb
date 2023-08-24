@@ -29,6 +29,7 @@ class Ability
       can :create , Enrollment
       can :destroy , Enrollment, student_id: user.id
       can :read, Chapter, course: {enrollments: {student_id: user.id}}
+      can :create, ChapterResult, chapter: {course: {enrollments: {student_id: user.id}}}
     end
 
     # Define abilities for the user here. For example:

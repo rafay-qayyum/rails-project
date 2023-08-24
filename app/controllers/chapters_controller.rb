@@ -1,6 +1,6 @@
 class ChaptersController < ApplicationController
-  load_and_authorize_resource :courses
-  load_and_authorize_resource :chapters, through: :courses
+  load_and_authorize_resource :course
+  load_and_authorize_resource
 
   def index
     @course = Course.find(params[:course_id])
@@ -8,7 +8,6 @@ class ChaptersController < ApplicationController
   end
 
   def show
-    debugger
     begin
       @course = Course.find(params[:course_id])
     rescue ActiveRecord::RecordNotFound

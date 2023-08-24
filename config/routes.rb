@@ -18,11 +18,10 @@ Rails.application.routes.draw do
     resources :courses, only: [:index]
   end
   resources :courses do
-    resources :chapters
     resources :enrollments
-  end
-  resources :chapters do
-    resources :chapter_results, only: [:create,:new]
+    resources :chapters do
+      resources :chapter_results, only: [:create]
+    end
   end
   resources :chapter_results, only: [:show]
   resources :posts, only: [:create,:destroy]
