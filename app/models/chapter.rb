@@ -21,7 +21,7 @@ class Chapter < ApplicationRecord
 
 private
   def update_total_chapters
-    self.course.total_chapters = self.course.chapters.count + 1
+    self.course.total_chapters = self.course.chapters.count
     self.course.save
   end
 end
