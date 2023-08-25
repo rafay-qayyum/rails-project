@@ -47,7 +47,11 @@
   <br><br><br><br><br><br><br><br><br>
   <div>
     <%= link_to "Back to Course", course_path(@chapter.course), class:"button"%>
-    <%= link_to "Peer Review", course_chapter_peer_reviews_path(@chapter.course,@chapter), class: "button" %>
+    <% if can? :manage, PeerReview%>
+      <%= link_to "Review Peers", course_chapter_chapter_results_path(@chapter.course,@chapter), class: "button" %>
+      <%= link_to "Your Reviews", course_chapter_peer_reviews_path(@chapter.course,@chapter), class: "button" %>
+
+    <% end %>
 
     <% if can? :manage, @chapter %>
       <%= link_to "Edit Chapter",  edit_course_chapter_path(@chapter.course, @chapter), class:"button" %>
