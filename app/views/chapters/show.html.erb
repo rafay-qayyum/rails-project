@@ -23,17 +23,19 @@
         <% end %>
       </div>
     </div>
+    <br>
     <% if !@has_submitted and !@curr_user.is_a?(Instructor) %>
+      <h2>Quiz and Assignment Submission:</h2>
       <div class="submission-container">
         <% if @chapter.quiz.attached? && @chapter.assignment.attached? %>
           <%= form_with url: course_chapter_chapter_results_path(@chapter.course, @chapter), method: :post do |f| %>
             <div class="quiz-submission">
                 <%= f.label :attempted_quiz, "Submit Quiz" %>
-                <%= f.file_field :attempted_quiz %>
+                <%= f.file_field :attempted_quiz, required: true, accept: 'application/pdf' %>
             </div>
             <div class="assignment-submission">
                 <%= f.label :attempted_assignment, "Submit Assignment" %>
-                <%= f.file_field :attempted_assignment %>
+                <%= f.file_field :attempted_assignment, required: true, accept: 'application/pdf' %>
             </div>
               <%= f.submit "Submit", class: "button" %>
           <% end %>
@@ -45,6 +47,8 @@
   <br><br><br><br><br><br><br><br><br>
   <div>
     <%= link_to "Back to Course", course_path(@chapter.course), class:"button"%>
+    <%= link_to "Peer Review", course_chapter_peer_reviews_path(@chapter.course,@chapter), class: "button" %>
+
     <% if can? :manage, @chapter %>
       <%= link_to "Edit Chapter",  edit_course_chapter_path(@chapter.course, @chapter), class:"button" %>
       <%= link_to "Delete Chapter", course_chapter_path(@chapter.course, @chapter), class:"button", data: { 'turbo-method': :delete}%>

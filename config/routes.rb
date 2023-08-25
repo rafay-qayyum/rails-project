@@ -19,12 +19,13 @@ Rails.application.routes.draw do
   # end
   resources :courses do
     resources :chapters do
-      resources :chapter_results, only: [:create,:new]
+      resources :peer_reviews, only: [:update, :edit, :index]
+      resources :chapter_results, only: [:create, :new]
     end
     resources :enrollments
   end
-  resources :posts, only: [:create,:destroy]
-  resources :comments, only: [:create,:destroy]
+  resources :posts, only: [:create, :destroy]
+  resources :comments, only: [:create, :destroy]
   resources :instructors
   resource :student
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
