@@ -13,26 +13,21 @@ Rails.application.routes.draw do
   end
   root "home#index"
   get "/about", to: "home#about"
-  resources :courses, only: [:index,:show]
-  resources :students do
-    resources :courses, only: [:index]
-  end
+  # resources :courses, only: [:index,:show]
+  # resources :students do
+  #   resources :courses, only: [:index]
+  # end
   resources :courses do
-    resources :chapters
+    resources :chapters do
+      resources :peer_reviews, only: [:update, :edit, :index]
+      resources :chapter_results, only: [:create, :new]
+    end
     resources :enrollments
   end
-  resources :chapters do
-    resources :chapter_results, only: [:create,:new]
-  end
-  resources :chapter_results, only: [:show]
-  resources :posts, only: [:create,:destroy]
-  resources :comments, only: [:create,:destroy]
-  resources :instructors do
-    resources :courses
-  end
-  resources :chapters do
-    resources :chapter_results, only: [:create,:new]
-  end
+  resources :posts, only: [:create, :destroy]
+  resources :comments, only: [:create, :destroy]
+  resources :instructors
+  resource :student
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # for now we will just define a root route
   # authenticated :student do

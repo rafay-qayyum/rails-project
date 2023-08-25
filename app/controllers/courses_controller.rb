@@ -1,8 +1,8 @@
 class CoursesController < ApplicationController
-  load_and_authorize_resource :courses, through: :instructors
+  load_and_authorize_resource
 
   def index
-    @courses=Course.all
+    @courses = Course.all
   end
 
   def new
@@ -23,30 +23,14 @@ class CoursesController < ApplicationController
   end
 
   def show
-    begin
-      @course = Course.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:alert] = "The course you are looking for could not be found"
-      redirect_to root_path(current_user)
-    end
+
   end
 
   def edit
-    begin
-      @course = Course.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:alert] = "The course you are looking for could not be found"
-      redirect_to instructor_path(current_instructor)
-    end
+
   end
 
   def update
-    begin
-      @course = Course.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:alert] = "The course you are looking for could not be found"
-      redirect_to instructor_path(current_instructor)
-    end
     if @course.update(course_params)
       flash[:notice] = "Course updated successfully"
       redirect_to course_path(@course)

@@ -1,6 +1,6 @@
 class ChaptersController < ApplicationController
-  load_and_authorize_resource :courses
-  load_and_authorize_resource :chapters, through: :courses
+  load_and_authorize_resource :course
+  load_and_authorize_resource :chapter, through: :course
 
   def index
     @course = Course.find(params[:course_id])
@@ -8,39 +8,15 @@ class ChaptersController < ApplicationController
   end
 
   def show
-    debugger
-    begin
-      @course = Course.find(params[:course_id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:alert] = "The course you are looking for could not be found"
-      redirect_to instructor_path(current_instructor)
-    end
-    begin
-      @chapter = @course.chapters.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:alert] = "The chapter you are looking for could not be found"
-      redirect_to course_path(@course)
-    end
+    @has_submitted = ChapterResult.where(student_id: current_user.id, course_id: params[:course_id], chapter_id: params[:id]).present?
+    @curr_user = current_user
   end
 
   def new
-    begin
-      @course = Course.find(params[:course_id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:alert] = "The course you are looking for could not be found"
-      redirect_to instructor_path(current_instructor)
-    end
     @chapter = @course.chapters.new
   end
 
   def create
-    begin
-      @course = Course.find(params[:chapter][:course_id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:alert] = "The course you are looking for could not be found"
-      redirect_to instructor_path(current_instructor)
-    end
-    @chapter = @course.chapters.create(chapter_params)
     if @chapter.save
       flash[:notice] = "Chapter created successfully"
       redirect_to course_path(@course)
@@ -51,28 +27,11 @@ class ChaptersController < ApplicationController
   end
 
   def edit
-    begin
-      @course = Course.find(params[:course_id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:alert] = "The course you are looking for could not be found"
-      redirect_to instructor_path(current_instructor)
-    end
-    begin
-      @chapter = @course.chapters.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:alert] = "The chapter you are looking for could not be found"
-      redirect_to course_path(@course)
-    end
+
   end
 
   def update
-    begin
-      @chapter = Chapter.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:alert] = "The chapter you are looking for could not be found"
-      redirect_to course_path(@course)
-    end
-    if @chapter.update(chapter_params)
+    if @chapter.save
       flash[:notice] = "Chapter updated successfully"
       redirect_to course_path(@chapter.course_id)
     else
@@ -82,12 +41,6 @@ class ChaptersController < ApplicationController
   end
 
   def destroy
-    begin
-      @chapter = Chapter.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:alert] = "The chapter you are looking for could not be found"
-      redirect_to course_path(@course)
-    end
     @chapter.destroy
     redirect_to course_path(@chapter.course_id)
   end
