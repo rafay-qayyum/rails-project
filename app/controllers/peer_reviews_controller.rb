@@ -42,9 +42,15 @@ class PeerReviewsController < ApplicationController
         # calculate average marks
         avg_quiz_marks = @reviews_of_stu.average(:quiz_marks)
         avg_assignment_marks = @reviews_of_stu.average(:assignment_marks)
-        @reviewee_chapter_results[:total_marks] = (avg_quiz_marks + avg_assignment_marks) / 2
         @reviewee_chapter_results[:is_reviewed] = true
+        @reviewee_chapter_results[:total_marks] = (avg_assignment_marks + avg_assignment_marks)/2.0
         @reviewee_chapter_results.save
+        @completed_chapters = ChapterResult.where(student_id: params[:reviewee_id], course_id: params[:course_id])
+        if completed_chapters.count >= @course.total_chapters
+          @enrollment = @course.enrollments.where(student_id: params[:reviewee_id])
+          @enrollment[:grade] = calculate_grade(@completed_chapters.average(:total_marks))
+          @enrollment.save
+        end
       end
       flash[:notice] = "Peer review created successfully"
       redirect_to course_chapter_path(params[:course_id], params[:chapter_id]) and return
@@ -64,6 +70,12 @@ class PeerReviewsController < ApplicationController
     @avg_quiz_marks = @peer_reviews.average(:quiz_marks)
     @avg_assignment_marks = @peer_reviews.average(:assignment_marks)
     @avg_total_marks = (@avg_quiz_marks + @avg_assignment_marks) / 2
+    @message = ''
+    if @peer_reviews.count<3
+      @message = "You need #{3-@peer_reviews.count} review(s) to complete this chapter."
+    else
+      @message = @avg_total_marks>50 ? "PASSED" : "FAILED"
+    end
   end
 
   def current_user
@@ -71,5 +83,25 @@ class PeerReviewsController < ApplicationController
   end
 
   private
-
+  def calculate_grade(score)
+    if score >= 90
+      return "A+"
+    elsif score >= 85
+      return "A"
+    elsif score >= 80
+      return "B+"
+    elsif score >= 75
+      return "B"
+    elsif score >= 70
+      return "C+"
+    elsif score >= 65
+      return "C"
+    elsif score >= 60
+      return "D+"
+    elsif score >= 55
+      return "D"
+    else
+      return "F"
+    end
+  end
 end

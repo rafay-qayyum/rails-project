@@ -8,7 +8,7 @@ class Enrollment < ApplicationRecord
 
   # Validations
   validates :chapters_completed, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }  #, default: 0
-  validates :grade, presence: true, inclusion: { in: %w(A+ A B+ B C+ C D+ D F) }  #, default: "F"
+  validates :grade, presence: true, inclusion: { in: %w(A+ A B+ B C+ C D+ D F O) }  #, default: "F"
   validates :course_id, presence: true, numericality: { only_integer: true }
   validates :student_id, presence: true, numericality: { only_integer: true }
 

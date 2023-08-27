@@ -21,6 +21,7 @@
     </div>
 
     <div class="course-info">
+      <p class="grade"><b>Grade:</b> <%= @grade %></p>
       <p class="price"><b>Price:</b> <%= number_to_currency(@course.price) %></p>
       <p class="language"><b>Language:</b> <%= @course.language %></p>
       <p class="requirements"><b>Requirements:</b> <%= @course.requirements %></p>
@@ -56,8 +57,10 @@
   <% else %>
       <%= link_to "Back to Course Catalog", authenticated_instructor_root_path, class:"button"%>
   <% end %>
-
-  <% if can? :create, Enrollment and !current_student.enrollments.find_by(course_id: @course.id) %>
+  <%enrolled = current_student.enrollments.find_by(course_id: @course.id) %>
+  <% if can? :create, Enrollment and !enrolled %>
     <%= link_to "Enroll", course_enrollments_path(@course), class:"button", data: { 'turbo-method': :post }%>
+  <%elsif can? :destroy, Enrollment and enrolled %>
+    <%= link_to "Unenroll", course_enrollment_path(@course, enrolled), class:"button", data: { 'turbo-method': :delete, turbo_confirm: "Are you sure?" }%>
   <% end %>
 </body>
