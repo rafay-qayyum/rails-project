@@ -23,15 +23,17 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @enrollment = Enrollment.where(student_id: current_user.id, course_id: params[:id]).first
-    # get grade if enrollment exists, if grade is O then student has not completed the course
-    @grade = @enrollment.present? ? @enrollment.grade : nil
     @message = nil
-    if @enrollment.present?
-      if @grade == 'O'
-        @message = 'Pending'
-      else
-        @message = "#{@grade}"
+    if current_user.is_a?(Student)
+      @enrollment = Enrollment.where(student_id: current_user.id, course_id: params[:id]).first
+      # get grade if enrollment exists, if grade is O then student has not completed the course
+      @grade = @enrollment.present? ? @enrollment.grade : nil
+      if @enrollment.present?
+        if @grade == 'O'
+          @message = 'Pending'
+        else
+          @message = "#{@grade}"
+        end
       end
     end
   end
