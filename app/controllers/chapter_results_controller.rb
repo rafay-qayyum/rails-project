@@ -29,7 +29,18 @@ class ChapterResultsController < ApplicationController
       @enrollment=current_user.enrollments.where(course_id: params[:course_id]).first
       @enrollment[:chapters_completed] += 1
       @chapter_result = ChapterResult.create(chapter_result_params.merge!({student_id: current_user.id}))
-      if @chapter_result.save and @enrollment.save
+      # use transaction to ensure that either both or none of the operations are performed
+      is_successful = false
+      ActiveRecord::Base.transaction do
+        begin
+          @enrollment.save!
+          @chapter_result.save!
+          is_successful = true
+        rescue
+          is_successful = false
+        end
+      end
+      if is_successful == true
         flash[:notice] = "Chapter result created successfully"
         redirect_to course_chapter_path(@chapter.course_id, @chapter.id)
       else

@@ -15,8 +15,8 @@ class PeerReviewsController < ApplicationController
       flash[:alert] = "You have never attempted this chapter"
       redirect_to course_chapter_path(params[:course_id], params[:chapter_id]) and return
     end
-    @reviewee_chapter_results=ChapterResult.where(student_id: params[:reviewee_id], course_id: params[:course_id], chapter_id: params[:chapter_id]).first
-    if @reviewee_chapter_results.nil?
+    @reviewee_chapter_result=ChapterResult.where(student_id: params[:reviewee_id], course_id: params[:course_id], chapter_id: params[:chapter_id]).first
+    if @reviewee_chapter_result.nil?
       flash[:alert] = "This Student has never attempted this chapter"
       redirect_to course_chapter_path(params[:course_id], params[:chapter_id]) and return
     end
@@ -34,23 +34,35 @@ class PeerReviewsController < ApplicationController
     @peer_review = PeerReview.new(reviewer_id: current_student.id,
      reviewee_id: params[:reviewee_id], course_id: params[:course_id],
       chapter_id: params[:chapter_id], quiz_marks: params[:quiz_marks],
-       assignment_marks: params[:assignment_marks], chapter_result_id: @reviewee_chapter_results.id)
-    if @peer_review.save
-      @reviews_of_stu=PeerReview.where(course_id: params[:course_id], chapter_id: params[:chapter_id], reviewee_id: params[:reviewee_id])
-      if @reviews_of_stu.count == 3
-        # calculate average marks
-        avg_quiz_marks = @reviews_of_stu.average(:quiz_marks)
-        avg_assignment_marks = @reviews_of_stu.average(:assignment_marks)
-        @reviewee_chapter_results[:is_reviewed] = true
-        @reviewee_chapter_results[:total_marks] = (avg_assignment_marks + avg_assignment_marks)/2.0
-        @reviewee_chapter_results.save
-        @completed_chapters = ChapterResult.where(student_id: params[:reviewee_id], course_id: params[:course_id])
-        if @completed_chapters.count >= @course.total_chapters
-          @enrollment = @course.enrollments.where(student_id: params[:reviewee_id]).first
-          @enrollment[:grade] = calculate_grade(@completed_chapters.average(:total_marks))
-          @enrollment.save
+       assignment_marks: params[:assignment_marks], chapter_result_id: @reviewee_chapter_result.id)
+    is_successful = false
+    # use transaction to ensure that either both or none of the operations are performed
+    is_successful = false
+    ActiveRecord::Base.transaction do
+      begin
+        if @peer_review.save
+          @reviews_of_stu=PeerReview.where(course_id: params[:course_id], chapter_id: params[:chapter_id], reviewee_id: params[:reviewee_id])
+          if @reviews_of_stu.count == 3
+            # calculate average marks
+            avg_quiz_marks = @reviews_of_stu.average(:quiz_marks)
+            avg_assignment_marks = @reviews_of_stu.average(:assignment_marks)
+            @reviewee_chapter_result[:is_reviewed] = true
+            @reviewee_chapter_result[:total_marks] = (avg_assignment_marks + avg_assignment_marks)/2.0
+            @reviewee_chapter_result.save
+            @completed_chapters = ChapterResult.where(student_id: params[:reviewee_id], course_id: params[:course_id])
+            if @completed_chapters.count >= @course.total_chapters
+              @enrollment = @course.enrollments.where(student_id: params[:reviewee_id]).first
+              @enrollment[:grade] = calculate_grade(@completed_chapters.average(:total_marks))
+              @enrollment.save
+            end
+          end
+          is_successful = true
         end
+      rescue
+        is_successful = false
       end
+    end
+    if is_successful == true
       flash[:notice] = "Peer review created successfully"
       redirect_to course_chapter_path(params[:course_id], params[:chapter_id]) and return
     else
@@ -58,6 +70,7 @@ class PeerReviewsController < ApplicationController
       redirect_to course_chapter_path(params[:course_id], params[:chapter_id]), status: :unprocessable_entity and return
     end
   end
+
 
   # function returns all the peer reviews of a student for a particular chapter
   def index
@@ -73,7 +86,7 @@ class PeerReviewsController < ApplicationController
     if @peer_reviews.count<3
       @message = "You need #{3-@peer_reviews.count} review(s) to complete this chapter."
     else
-      @message = @avg_total_marks>50 ? "PASSED" : "FAILED"
+      @message = "You have completed this chapter."
     end
   end
 
