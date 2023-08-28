@@ -23,7 +23,17 @@ class CoursesController < ApplicationController
   end
 
   def show
-
+    @enrollment = Enrollment.where(student_id: current_user.id, course_id: params[:id]).first
+    # get grade if enrollment exists, if grade is O then student has not completed the course
+    @grade = @enrollment.present? ? @enrollment.grade : nil
+    @message = nil
+    if @enrollment.present?
+      if @grade == 'O'
+        @message = 'Pending'
+      else
+        @message = "#{@grade}"
+      end
+    end
   end
 
   def edit
@@ -41,12 +51,6 @@ class CoursesController < ApplicationController
   end
 
   def destroy
-    begin
-      @course = Course.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:alert] = "The course you are looking for could not be found"
-      redirect_to instructor_path(current_instructor)
-    end
     @course.destroy
     redirect_to instructor_path(current_instructor)
   end

@@ -19,8 +19,8 @@ Rails.application.routes.draw do
   # end
   resources :courses do
     resources :chapters do
-      resources :peer_reviews, only: [:update, :edit, :index]
-      resources :chapter_results, only: [:create, :new]
+      resources :peer_reviews, only: [:index, :new, :create]
+      resources :chapter_results, only: [:create, :new, :index]
     end
     resources :enrollments
   end

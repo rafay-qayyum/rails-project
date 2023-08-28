@@ -1,54 +1,30 @@
 <head>
-  <title>Peer Review</title>
-  <%= stylesheet_link_tag 'peer_review.css' %>
+  <title>Student Peer Reviews</title>
+  <%= stylesheet_link_tag 'student_reviews' %>
 </head>
-
 <body>
-  <div class="peer-review-container">
-    <h1 class="review-title">Peer Review</h1>
+  <h1>Peer Reviews and Marks</h1>
 
-    <ul class="review-list">
-      <% @submissions.each do |submission| %>
-        <li class="review-item">
-          <div class="review-box">
-            <h2 class="chapter-name"><%= submission.chapter.name %></h2>
+  <div class="reviews">
+    <h2>Your Peer Reviews</h2>
+    <% @peer_reviews.each do |review| %>
+      <div class="review-card">
+        <h3>Review <%= review.id %></h3>
+        <p>Assignment Marks: <%= review.assignment_marks %></p>
+        <p>Quiz Marks: <%= review.quiz_marks %></p>
+      </div>
+    <% end %>
+  </div>
 
-            <div class="file-links">
-              <% if submission.chapter.quiz.attached? %>
-                <a href="<%= url_for(submission.chapter.quiz) %>" class="download-link" download>Download Quiz</a>
-              <% end %>
-              <% if submission.chapter.assignment.attached? %>
-                <a href="<%= url_for(submission.chapter.assignment) %>" class="download-link" download>Download Assignment</a>
-              <% end %>
-            </div>
+  <div class="averages">
+    <h2>Average Marks</h2>
+    <p>Average Assignment Marks: <%= @avg_assignment_marks %></p>
+    <p>Average Quiz Marks: <%= @avg_quiz_marks %></p>
+    <p>Average Total Marks: <%= @avg_total_marks %></p>
+    <%=@message%>
+  </div>
 
-
-            <div class="submit-section">
-              <%= form_with(model: submission, url: edit_course_chapter_peer_review_path(submission,@chapter,@course), method: :patch) do |f| %>
-                <div class="marks-section">
-                <div class="mark-field">
-                  <label for="quiz_marks" class="marks-label">Quiz Marks:</label>
-                  <input type="number" name="submission[quiz_marks]" class="marks-input" value="<%= submission.quiz_marks %>">
-                </div>
-                <div class="mark-field">
-                  <label for="assignment_marks" class="marks-label">Assignment Marks:</label>
-                  <input type="number" name="submission[assignment_marks]" class="marks-input" value="<%= submission.assignment_marks %>">
-                </div>
-              </div>
-
-              <div class="submit-section">
-                <%= f.hidden_field :chapter_id, value: submission.chapter.id %>
-                <%= f.submit "Submit", class: "submit-button" %>
-              </div>
-              <% end %>
-            </div>
-          </div>
-        </li>
-      <% end %>
-    </ul>
-
-    <div class="back-link">
-      <%= link_to "Back to Chapter", course_chapter_path(@chapter,@course), class: "button" %>
-    </div>
+  <div class="back-button">
+    <%= link_to 'Back to Chapter', course_chapter_path(@chapter.course, @chapter), class: 'button' %>
   </div>
 </body>

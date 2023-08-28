@@ -1,0 +1,53 @@
+<head>
+  <title>Peer Review</title>
+  <%= stylesheet_link_tag 'peer_review.css' %>
+</head>
+
+<body>
+  <div class="peer-review-container">
+    <h1 class="review-title">Peer Review of <%=@chapter.name%> </h1>
+
+    <ul class="review-list">
+      <% @submissions.each do |submission| %>
+        <li class="review-item">
+          <div class="review-box">
+
+            <div class="file-links">
+              <% if submission.chapter.quiz.attached? %>
+                <a href="<%= url_for(submission.chapter.quiz) %>" class="download-link" download>Download Quiz</a>
+              <% end %>
+              <% if submission.chapter.assignment.attached? %>
+                <a href="<%= url_for(submission.chapter.assignment) %>" class="download-link" download>Download Assignment</a>
+              <% end %>
+            </div>
+
+
+            <div class="submit-section">
+              <%= form_with url: course_chapter_peer_reviews_path(@course,@chapter,submission), method: :post do |f| %>
+                <div class="marks-section">
+                <div class="mark-field">
+                  <%=f.label :quiz_marks, class: "marks-label"%>
+                  <%=f.number_field :quiz_marks, class: "marks-input", min: 0, max: 100%>
+                </div>
+                <div class="mark-field">
+                  <%=f.label :assignment_marks, class: "marks-label"%>
+                  <%=f.number_field :assignment_marks, class: "marks-input", min: 0, max: 100%>
+                </div>
+              </div>
+
+              <div class="submit-section">
+                <%= f.hidden_field :reviewee_id, value: submission.student.id, class: "student-id", readonly: true %>
+                <%= f.submit "Submit", class: "submit-button" %>
+              </div>
+              <% end %>
+            </div>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+
+    <div class="back-link">
+      <%= link_to "Back to Chapter", course_chapter_path(@course,@chapter), class: "button" %>
+    </div>
+  </div>
+</body>
