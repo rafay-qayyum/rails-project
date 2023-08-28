@@ -1,7 +1,7 @@
 class ChapterResultsController < ApplicationController
   load_and_authorize_resource :course
   load_and_authorize_resource :chapter, through: :course
-  load_and_authorize_resource :chapter_result, through: :chapter
+  load_and_authorize_resource :chapter_result
 
 
   def index
@@ -13,16 +13,15 @@ class ChapterResultsController < ApplicationController
     @submissions = @submissions.reject { |submission| submission.peer_reviews.where(reviewer_id: current_user.id).present? }
     if PeerReview.where(course_id: params[:course_id], chapter_id: params[:chapter_id], reviewer_id: current_student).count >= 3
       flash[:alert] = "You have already reviewed 3 submissions"
-      redirect_to course_chapter_path(params[:course_id], params[:chapter_id])
+      redirect_to course_chapter_path(params[:course_id], params[:chapter_id]) and return
     end
     if @submissions.count == 0
       flash[:notice] = "No submissions to review"
-      redirect_to course_chapter_path(params[:course_id], params[:chapter_id])
+      redirect_to course_chapter_path(params[:course_id], params[:chapter_id]) and return
     end
   end
 
   def create
-    
     if ChapterResult.where(student_id: current_user.id, course_id: params[:course_id], chapter_id: params[:chapter_id]).present?
       flash[:alert] = "You have already attempted this chapter"
       redirect_to course_chapter_path(params[:course_id], params[:chapter_id])

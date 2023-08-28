@@ -20,6 +20,6 @@ class Enrollment < ApplicationRecord
 private
 def set_defaults
   self.chapters_completed = 0
-  self.grade = "F"
+  self.grade = "O"
 end
 end

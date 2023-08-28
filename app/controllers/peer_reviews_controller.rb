@@ -6,7 +6,6 @@ class PeerReviewsController < ApplicationController
 
 
   def create
-    debugger
     @student = Student.where(id: params[:reviewee_id]).first
     if @student.nil?
       flash[:alert] = "Student doesn't exist"
@@ -46,8 +45,8 @@ class PeerReviewsController < ApplicationController
         @reviewee_chapter_results[:total_marks] = (avg_assignment_marks + avg_assignment_marks)/2.0
         @reviewee_chapter_results.save
         @completed_chapters = ChapterResult.where(student_id: params[:reviewee_id], course_id: params[:course_id])
-        if completed_chapters.count >= @course.total_chapters
-          @enrollment = @course.enrollments.where(student_id: params[:reviewee_id])
+        if @completed_chapters.count >= @course.total_chapters
+          @enrollment = @course.enrollments.where(student_id: params[:reviewee_id]).first
           @enrollment[:grade] = calculate_grade(@completed_chapters.average(:total_marks))
           @enrollment.save
         end

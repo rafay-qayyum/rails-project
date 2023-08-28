@@ -1,6 +1,5 @@
 class ChapterResult < ApplicationRecord
 
-
   # Associations
   belongs_to :chapter
   belongs_to :student

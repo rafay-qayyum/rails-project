@@ -17,8 +17,11 @@ class EnrollmentsController < ApplicationController
   end
 
   def destroy
-    @enrollment = Enrollment.find(params[:id])
     @enrollment.destroy
+    @chapter_results = ChapterResult.where(student_id: current_user.id, course_id: params[:course_id])
+    if !@chapter_results.nil?
+      @chapter_results.destroy_all
+    end
     redirect_to course_path(@enrollment.course_id)
   end
 
