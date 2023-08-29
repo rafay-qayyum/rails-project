@@ -50,7 +50,6 @@ class ChaptersController < ApplicationController
   end
 
 private
-
   def chapter_params
     params.require(:chapter).permit(:name,:content,:quiz,:assignment)
   end

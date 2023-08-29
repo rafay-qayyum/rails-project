@@ -14,8 +14,8 @@ class Ability
     if user.is? :admin
       can :manage, :all
     end
-    # student can read the chapters of the course they are enrolled in
 
+    
     if user.is? :instructor
       can :manage, Course, instructor_id: user.id
       can :manage, Chapter, course: { instructor_id: user.id }

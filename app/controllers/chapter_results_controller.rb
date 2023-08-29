@@ -3,7 +3,6 @@ class ChapterResultsController < ApplicationController
   load_and_authorize_resource :chapter, through: :course
   load_and_authorize_resource :chapter_result
 
-
   def index
     @submissions=ChapterResult.where( course_id: params[:course_id], chapter_id: params[:chapter_id])
                               .where.not(student_id: current_user.id).left_outer_joins(:peer_reviews)

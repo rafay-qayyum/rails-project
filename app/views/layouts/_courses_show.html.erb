@@ -1,5 +1,5 @@
 <div class="course-card">
-    <%= image_tag course.image, alt: course.title %>
+    <%= image_tag course.cached_image_url, alt: course.title %>
     <h2 class="course-title"><%=link_to course.title, course_path(course), class:"course-title"%></h2>
     <p class="course-price"><%= number_to_currency(course.price) %></p>
 </div>

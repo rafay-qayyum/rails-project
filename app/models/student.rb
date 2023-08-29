@@ -23,16 +23,17 @@ class Student < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   validates :encrypted_password, presence: true
 
-  # Ransack
+  # Ransack: Active Admin
   def self.ransackable_attributes(auth_object=nil)
     ["email", "is_suspended", "name", "updated_at", "created_at", "remember_created_at", "reset_password_sent_at", "reset_password_token", "encrypted_password"]
   end
 
-  # Ransack
+  # Ransack: Active Admin
   def self.ransackable_associations(auth_object = nil)
     ["chapter_results", "courses", "enrollments", "posts", "replies"]
   end
 
+  # Check if the requested role is student: Devise
   def is?( requested_role )
     :student.to_s == requested_role.to_s
   end

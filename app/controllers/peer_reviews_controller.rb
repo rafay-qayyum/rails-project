@@ -36,7 +36,7 @@ class PeerReviewsController < ApplicationController
       chapter_id: params[:chapter_id], quiz_marks: params[:quiz_marks],
        assignment_marks: params[:assignment_marks], chapter_result_id: @reviewee_chapter_result.id)
     is_successful = false
-    # use transaction to ensure that either both or none of the operations are performed
+    # use transaction to ensure that either all or none of the operations are performed
     is_successful = false
     ActiveRecord::Base.transaction do
       begin
@@ -94,7 +94,7 @@ class PeerReviewsController < ApplicationController
     current_student || current_instructor
   end
 
-  private
+private
   def calculate_grade(score)
     if score >= 90
       return "A+"
@@ -116,6 +116,7 @@ class PeerReviewsController < ApplicationController
       return "F"
     end
   end
+  
   def average(marks)
     return marks.sum/marks.count
   end
