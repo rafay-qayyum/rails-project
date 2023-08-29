@@ -1,7 +1,7 @@
 class PeerReviewsController < ApplicationController
   load_and_authorize_resource :course
   load_and_authorize_resource :chapter
-  load_and_authorize_resource :peer_review
+  authorize_resource :peer_review
 
 
 
@@ -74,13 +74,13 @@ class PeerReviewsController < ApplicationController
 
   # function returns all the peer reviews of a student for a particular chapter
   def index
-    @peer_reviews = PeerReview.where(course_id: params[:course_id], chapter_id: params[:chapter_id], reviewee_id: current_user.id)
+    @peer_reviews = PeerReview.where(course_id: params[:course_id], chapter_id: params[:chapter_id], reviewee_id: current_user.id).to_a
     if @peer_reviews.empty?
       flash[:alert] = "No peer reviews found"
       redirect_to course_chapter_path(params[:course_id], params[:chapter_id]) and return
     end
-    @avg_quiz_marks = @peer_reviews.average(:quiz_marks)
-    @avg_assignment_marks = @peer_reviews.average(:assignment_marks)
+    @avg_quiz_marks = average(@peer_reviews.pluck(:quiz_marks))
+    @avg_assignment_marks = average(@peer_reviews.pluck(:assignment_marks))
     @avg_total_marks = (@avg_quiz_marks + @avg_assignment_marks) / 2
     @message = ''
     if @peer_reviews.count<3
@@ -115,5 +115,8 @@ class PeerReviewsController < ApplicationController
     else
       return "F"
     end
+  end
+  def average(marks)
+    return marks.sum/marks.count
   end
 end

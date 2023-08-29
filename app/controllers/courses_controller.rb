@@ -2,7 +2,7 @@ class CoursesController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @courses = Course.all
+    @courses=@courses.includes(:image_attachment)
   end
 
   def new
@@ -27,8 +27,8 @@ class CoursesController < ApplicationController
     if current_user.is_a?(Student)
       @enrollment = Enrollment.where(student_id: current_user.id, course_id: params[:id]).first
       # get grade if enrollment exists, if grade is O then student has not completed the course
-      @grade = @enrollment.present? ? @enrollment.grade : nil
-      if @enrollment.present?
+      @grade = !@enrollment.nil? ? @enrollment.grade : nil
+      if !@enrollment.nil?
         if @grade == 'O'
           @message = 'Pending'
         else
@@ -53,8 +53,15 @@ class CoursesController < ApplicationController
   end
 
   def destroy
-    @course.destroy
     redirect_to instructor_path(current_instructor)
+  end
+
+  def search
+    if !params[:search].blank?
+      @courses = Course.search(params[:search]).records
+    end
+    # fetch the images for the courses @courses from the database
+    # add the images to the @courses array
   end
 
 private

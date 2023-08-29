@@ -1,0 +1,29 @@
+
+<head>
+  <title>Search Courses</title>
+  <%= stylesheet_link_tag 'search'%>
+  <%= stylesheet_link_tag 'index_courses'%>
+</head>
+<body>
+  <h1>Search Courses</h1>
+
+
+<div class="search-section">
+  <%= form_tag(search_courses_path, method: :get, class: "search-form") do %>
+    <%= text_field_tag :search, params[:search], placeholder: "Search by chapter name", class: "search-bar" %>
+    <%= submit_tag "Search", class: "button" %>
+  <% end %>
+</div>
+  <% unless @courses.nil? %>
+    <% if @courses.empty? %>
+      <h2>No Course matching your query found</h2>
+    <% else %>
+      <h2 style="text-align:center;margin-top: 60px">Search Results</h2>
+      <main class="course-list">
+          <% @courses.each do |course| %>
+            <%= render 'layouts/courses_show', course:course %>
+          <% end %>
+      </main>
+    <% end %>
+  <% end %>
+</body>

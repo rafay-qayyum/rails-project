@@ -18,6 +18,10 @@ Rails.application.routes.draw do
   #   resources :courses, only: [:index]
   # end
   resources :courses do
+
+    collection do
+      get :search
+    end
     resources :chapters do
       resources :peer_reviews, only: [:index, :new, :create]
       resources :chapter_results, only: [:create, :new, :index]
@@ -28,6 +32,7 @@ Rails.application.routes.draw do
   resources :comments, only: [:create, :destroy]
   resources :instructors
   resource :student
+  #post '/courses/search', to: 'courses#search' , as: 'search_course_post'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # for now we will just define a root route
   # authenticated :student do

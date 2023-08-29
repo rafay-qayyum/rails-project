@@ -8,8 +8,7 @@
     <h1 class="chapter-name"><%= @chapter.name %> Details</h1>
 
     <div class="chapter-content">
-      <h2 class="headings">Content:</h2>
-      <p class="content"><%= @chapter.content %></p>
+      <p class="content"><%= markdown(@chapter.content) %></p>
     </div>
 
     <div class="chapter-files">
@@ -30,14 +29,20 @@
         <% if @chapter.quiz.attached? && @chapter.assignment.attached? %>
           <%= form_with url: course_chapter_chapter_results_path(@chapter.course, @chapter), method: :post do |f| %>
             <div class="quiz-submission">
-                <%= f.label :attempted_quiz, "Submit Quiz" %>
+              <%= f.label :attempted_quiz, "Submit Quiz:" %>
+              <label class="custom-file-input">
                 <%= f.file_field :attempted_quiz, required: true, accept: 'application/pdf' %>
+                <span>Choose PDF</span>
+              </label>
             </div>
             <div class="assignment-submission">
-                <%= f.label :attempted_assignment, "Submit Assignment" %>
+              <%= f.label :attempted_assignment, "Submit Assignment:" %>
+              <label class="custom-file-input">
                 <%= f.file_field :attempted_assignment, required: true, accept: 'application/pdf' %>
+                <span>Choose PDF</span>
+              </label>
             </div>
-              <%= f.submit "Submit", class: "button" %>
+            <%= f.submit "Submit", class: "button" %>
           <% end %>
         <% end %>
       </div>
@@ -45,7 +50,7 @@
   </div>
 
   <br><br><br><br><br><br><br><br><br>
-  <div>
+  <div class="buttons-container">
     <%= link_to "Back to Course", course_path(@chapter.course), class:"button"%>
     <% if can? :manage, PeerReview and @has_submitted %>
       <%= link_to "Review Peers", course_chapter_chapter_results_path(@chapter.course,@chapter), class: "button" %>

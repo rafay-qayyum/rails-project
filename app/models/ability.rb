@@ -33,6 +33,7 @@ class Ability
       can :create, ChapterResult, chapter: {course: {enrollments: {student_id: user.id}}}
       can :read , ChapterResult
       can :manage, PeerReview
+      can [:search] , Course
     end
 
     # Define abilities for the user here. For example:
