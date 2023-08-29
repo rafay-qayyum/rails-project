@@ -1,5 +1,36 @@
 class Course < ApplicationRecord
 
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+  # import all records from the DB to Elasticsearch
+  Course.import(force: true)
+
+  # create the mapping in Elasticsearch
+  settings index: { number_of_shards: 1 } do
+    mappings dynamic: false do
+      indexes :id, type: :integer
+      indexes :title , type: :text
+      indexes :price, type: :float
+      indexes :language, type: :text
+      indexes :total_chapters, type: :integer
+      indexes :instructor_id, type: :integer
+      indexes :created_at, type: :date
+      indexes :updated_at, type: :date
+    end
+  end
+
+  def self.search(query)
+    __elasticsearch__.search(
+      {
+        query: {
+          multi_match: {
+            query: query,
+            fields: ['title^10', 'description^5', 'requirements^5']
+          }
+        }
+      }
+    )
+  end
   # Callbacks
   before_validation do
     if self.new_record?
@@ -30,11 +61,19 @@ class Course < ApplicationRecord
     ["created_at", "description", "id", "instructor_id", "language", "price", "requirements", "title", "total_chapters", "updated_at"]
   end
 
-  def progress(student)
-    if self.chapters.count > 0
-      student.enrollments.where(course_id: self.id).first.chapters_completed * 100.0 / self.chapters.count
+
+  # override as_indexed_json method to include image from ActiveStorage table
+  def as_indexed_json(options={})
+    self.as_json(
+      only: [:id, :title, :price, :language, :total_chapters, :instructor_id, :created_at, :updated_at],
+       methods: [:service_url]
+    )
+  end
+  def service_url
+    if self.image.attached?
+      Rails.application.routes.url_helpers.rails_blob_url(self.image, only_path: true)
     else
-      0
+      nil
     end
   end
 end
