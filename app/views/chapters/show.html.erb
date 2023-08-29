@@ -48,7 +48,6 @@
     <% end %>
   </div>
 
-  <br><br><br><br><br><br><br><br><br>
   <div class="buttons-container">
     <%= link_to "Back to Course", course_path(@chapter.course), class:"button"%>
     <% if can? :manage, PeerReview and @has_submitted %>
