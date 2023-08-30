@@ -45,12 +45,15 @@ class ChaptersController < ApplicationController
     redirect_to course_path(@chapter.course_id)
   end
 
-  def current_user
-    current_student || current_instructor
-  end
-
 private
   def chapter_params
     params.require(:chapter).permit(:name,:content,:quiz,:assignment)
+  end
+
+  # Arguments: None
+  # Returns: Student or Instructor object
+  # Description: Returns the current user object
+  def current_user
+    current_student || current_instructor
   end
 end

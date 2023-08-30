@@ -30,6 +30,9 @@ private
     params.permit(:student_id, :course_id)
   end
 
+  # Arguments: None
+  # Returns: Student or Instructor object
+  # Description: Returns the current user object
   def current_user
     current_student || current_instructor
   end

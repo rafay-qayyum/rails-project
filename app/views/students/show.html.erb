@@ -10,15 +10,19 @@
             <p class="no-courses">You have no courses yet.</p>
         <% else %>
             <% @courses.each do |course| %>
+
               <div class="course-card">
+                
                 <%= image_tag course.cached_image_url, alt: course.title %>
                 <h2 class="course-title"><%=link_to course.title, course_path(course), class:"course-title"%></h2>
                 <p class="course-price"><%= number_to_currency(course.price) %></p>
+
                 <div class="progress">
                   <% progress = @progress[course.id] %>
                   <div class="progress-bar" style="width: <%= progress.round() %>%"></div>
                   <p class="progress-text"><%= progress.round() %>% completed</p>
                 </div>
+
               </div>
             <%end%>
         <% end %>

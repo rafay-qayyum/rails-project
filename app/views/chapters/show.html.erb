@@ -11,22 +11,28 @@
     </div>
 
     <div class="chapter-files">
+
       <h2 class="headings">Chapter Files:</h2>
       <div class="file-links">
         <% if @chapter.quiz.attached? %>
           <a href="<%= url_for(@chapter.quiz) %>" download>Download Quiz</a>
         <% end %>
+
         <% if @chapter.assignment.attached? %>
           <a href="<%= url_for(@chapter.assignment) %>" download>Download Assignment</a>
         <% end %>
       </div>
+
     </div>
+
+
     <br>
     <% if !@has_submitted and !@curr_user.is_a?(Instructor) %>
       <h2>Quiz and Assignment Submission:</h2>
       <div class="submission-container">
         <% if @chapter.quiz.attached? && @chapter.assignment.attached? %>
           <%= form_with url: course_chapter_chapter_results_path(@chapter.course, @chapter), method: :post do |f| %>
+
             <div class="quiz-submission">
               <%= f.label :attempted_quiz, "Submit Quiz:" %>
               <label class="custom-file-input">
@@ -34,6 +40,7 @@
                 <span>Choose PDF</span>
               </label>
             </div>
+
             <div class="assignment-submission">
               <%= f.label :attempted_assignment, "Submit Assignment:" %>
               <label class="custom-file-input">
@@ -41,6 +48,7 @@
                 <span>Choose PDF</span>
               </label>
             </div>
+
             <%= f.submit "Submit", class: "button" %>
           <% end %>
         <% end %>
@@ -53,7 +61,6 @@
     <% if can? :manage, PeerReview and @has_submitted %>
       <%= link_to "Review Peers", course_chapter_chapter_results_path(@chapter.course,@chapter), class: "button" %>
       <%= link_to "Your Reviews", course_chapter_peer_reviews_path(@chapter.course,@chapter), class: "button" %>
-
     <% end %>
 
     <% if can? :manage, @chapter %>

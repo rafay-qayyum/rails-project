@@ -13,6 +13,9 @@ class StudentsController < ApplicationController
   end
 
 private
+  # Arguments: None
+  # Returns: Student or Instructor object
+  # Description: Returns the current user object
   def current_user
     current_instructor || current_student
   end

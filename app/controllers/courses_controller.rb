@@ -34,10 +34,6 @@ class CoursesController < ApplicationController
     end
   end
 
-  def edit
-
-  end
-
   def update
     if @course.update(course_params)
       flash[:notice] = "Course updated successfully"
@@ -56,8 +52,6 @@ class CoursesController < ApplicationController
     if !params[:search].blank?
       @courses = Course.search(params[:search]).records
     end
-    # fetch the images for the courses @courses from the database
-    # add the images to the @courses array
   end
 
 private
@@ -65,6 +59,9 @@ private
     params.require(:course).permit(:title,:description,:price,:language,:requirements,:image)
   end
 
+  # Arguments: None
+  # Returns: Student or Instructor object
+  # Description: Returns the current user object
   def current_user
     current_student || current_instructor
   end

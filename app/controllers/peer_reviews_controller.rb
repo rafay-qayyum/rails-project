@@ -40,24 +40,23 @@ class PeerReviewsController < ApplicationController
     is_successful = false
     ActiveRecord::Base.transaction do
       begin
-        if @peer_review.save
-          @reviews_of_stu=PeerReview.where(course_id: params[:course_id], chapter_id: params[:chapter_id], reviewee_id: params[:reviewee_id])
-          if @reviews_of_stu.count == 3
-            # calculate average marks
-            avg_quiz_marks = @reviews_of_stu.average(:quiz_marks)
-            avg_assignment_marks = @reviews_of_stu.average(:assignment_marks)
-            @reviewee_chapter_result[:is_reviewed] = true
-            @reviewee_chapter_result[:total_marks] = (avg_assignment_marks + avg_assignment_marks)/2.0
-            @reviewee_chapter_result.save
-            @completed_chapters = ChapterResult.where(student_id: params[:reviewee_id], course_id: params[:course_id])
-            if @completed_chapters.count >= @course.total_chapters
-              @enrollment = @course.enrollments.where(student_id: params[:reviewee_id]).first
-              @enrollment[:grade] = calculate_grade(@completed_chapters.average(:total_marks))
-              @enrollment.save
-            end
+        @peer_review.save
+        @reviews_of_stu=PeerReview.where(course_id: params[:course_id], chapter_id: params[:chapter_id], reviewee_id: params[:reviewee_id])
+        if @reviews_of_stu.count == 3
+          # calculate average marks
+          avg_quiz_marks = @reviews_of_stu.average(:quiz_marks)
+          avg_assignment_marks = @reviews_of_stu.average(:assignment_marks)
+          @reviewee_chapter_result[:is_reviewed] = true
+          @reviewee_chapter_result[:total_marks] = (avg_assignment_marks + avg_assignment_marks)/2.0
+          @reviewee_chapter_result.save
+          @completed_chapters = ChapterResult.where(student_id: params[:reviewee_id], course_id: params[:course_id])
+          if @completed_chapters.count >= @course.total_chapters
+            @enrollment = @course.enrollments.where(student_id: params[:reviewee_id]).first
+            @enrollment[:grade] = calculate_grade(@completed_chapters.average(:total_marks))
+            @enrollment.save
           end
-          is_successful = true
         end
+          is_successful = true
       rescue
         is_successful = false
       end
@@ -90,10 +89,6 @@ class PeerReviewsController < ApplicationController
     end
   end
 
-  def current_user
-    current_student || current_instructor
-  end
-
 private
   def calculate_grade(score)
     if score >= 90
@@ -116,8 +111,15 @@ private
       return "F"
     end
   end
-  
+
   def average(marks)
     return marks.sum/marks.count
+  end
+
+  # Arguments: None
+  # Returns: Student or Instructor object
+  # Description: Returns the current user object
+  def current_user
+    current_student || current_instructor
   end
 end

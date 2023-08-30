@@ -58,6 +58,8 @@ class Course < ApplicationRecord
   validates :requirements, presence: true, length: { minimum:0, maximum:600 }
   validates :instructor_id, presence: true, numericality: { only_integer: true }
 
+
+  
   # Ransack
   def self.ransackable_attributes(auth_object = nil)
     ["created_at", "description", "id", "instructor_id", "language", "price", "requirements", "title", "total_chapters", "updated_at"]

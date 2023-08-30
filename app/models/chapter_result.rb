@@ -5,7 +5,6 @@ class ChapterResult < ApplicationRecord
   belongs_to :student
   belongs_to :course
   has_many :peer_reviews, dependent: :destroy
-
   has_one_attached :attempted_assignment
   has_one_attached :attempted_quiz
 

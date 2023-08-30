@@ -7,9 +7,9 @@
     <h1 class="page-title">Course Catalog</h1>
     <main class="course-list">
         <% if @courses.empty? %>
-        <h2 class="no-courses">No courses yet</h2>
+          <h2 class="no-courses">No courses yet</h2>
         <% else %>
-        <%= render partial: "layouts/courses_show", collection: @courses, as: :course %>
+          <%= render partial: "layouts/courses_show", collection: @courses, as: :course %>
         <% end %>
     </main>
 </body>

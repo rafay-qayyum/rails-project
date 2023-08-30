@@ -13,5 +13,4 @@ class Reply < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     ["content", "created_at", "id", "post_id", "replier_id", "replier_type", "updated_at"]
   end
-
 end

@@ -3,8 +3,6 @@ Rails.application.routes.draw do
   devise_for :students
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  # for now we will just define a root route
   authenticated :student do
     root :to => 'students#show' , as: :authenticated_student_root
   end
@@ -13,10 +11,6 @@ Rails.application.routes.draw do
   end
   root "home#index"
   get "/about", to: "home#about"
-  # resources :courses, only: [:index,:show]
-  # resources :students do
-  #   resources :courses, only: [:index]
-  # end
   resources :courses do
 
     collection do

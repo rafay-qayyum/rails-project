@@ -46,7 +46,7 @@ class ChapterResultsController < ApplicationController
         flash[:alert] = "Chapter result not created successfully"
         render course_chapter_path(@chapter.course_id, @chapter.id), status: :unprocessable_entity
       end
-  end
+    end
   end
 
   def destroy
@@ -60,6 +60,9 @@ private
     params.permit(:attempted_assignment, :attempted_quiz, :chapter_id, :course_id)
   end
 
+  # Arguments: None
+  # Returns: Student or Instructor object
+  # Description: Returns the current user object
   def current_user
     current_student || current_instructor
   end
