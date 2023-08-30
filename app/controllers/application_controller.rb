@@ -15,7 +15,6 @@ class ApplicationController < ActionController::Base
     redirect_to '/404'
   end
 
-
 protected
   def configure_permitted_parameters
     # parameters for updating an account

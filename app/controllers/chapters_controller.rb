@@ -26,10 +26,6 @@ class ChaptersController < ApplicationController
     end
   end
 
-  def edit
-
-  end
-
   def update
     if @chapter.save
       flash[:notice] = "Chapter updated successfully"

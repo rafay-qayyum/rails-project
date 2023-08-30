@@ -4,7 +4,7 @@ class EnrollmentsController < ApplicationController
   def create
     if Enrollment.where(student_id: current_user.id, course_id: params[:course_id]).present?
       flash[:notice] = "You have already enrolled in this course"
-      redirect_to course_path(params[:course_id])
+      redirect_to course_path(params[:course_id]) and return
     end
     @enrollment = current_user.enrollments.new(enrollment_params)
     if @enrollment.save
@@ -17,6 +17,10 @@ class EnrollmentsController < ApplicationController
   end
 
   def destroy
+    if !(Enrollment.where(student_id: current_user.id, course_id: params[:course_id]).present?)
+      flash[:notice] = "You are not enrolled in this course"
+      redirect_to course_path(params[:course_id]) and return
+    end
     @enrollment.destroy
     @chapter_results = ChapterResult.where(student_id: current_user.id, course_id: params[:course_id])
     if !@chapter_results.nil?
