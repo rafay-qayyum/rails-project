@@ -27,8 +27,8 @@ Rails.application.routes.draw do
   resources :instructors
   resource :student
 
+
   get '/404', to: 'errors#not_found'
   get '/500', to: 'errors#internal_server'
   get '/422', to: 'errors#unprocessable'
-  get '*unmatched_route', to: 'errors#not_found'
 end
