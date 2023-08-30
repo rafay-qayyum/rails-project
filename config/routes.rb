@@ -32,17 +32,9 @@ Rails.application.routes.draw do
   resources :comments, only: [:create, :destroy]
   resources :instructors
   resource :student
-  #post '/courses/search', to: 'courses#search' , as: 'search_course_post'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  # for now we will just define a root route
-  # authenticated :student do
-  #   root :to => 'students#index' , as: :authenticated_student_root
-  # end
-  # authenticated :instructor do
-  #   root :to => 'instructors#index' , as: :authenticated_instructor_root
-  # end
-  # root "home#index"
-  # get "/about", to: "home#about
-  # Defines the root path route ("/")
-  # root "articles#index"
+
+  get '/404', to: 'errors#not_found'
+  get '/500', to: 'errors#internal_server'
+  get '/422', to: 'errors#unprocessable'
+  get '*unmatched_route', to: 'errors#not_found'
 end
