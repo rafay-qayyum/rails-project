@@ -27,7 +27,7 @@ class ChaptersController < ApplicationController
   end
 
   def update
-    if @chapter.save
+    if @chapter.update(chapter_params)
       flash[:notice] = "Chapter updated successfully"
       redirect_to course_path(@chapter.course_id)
     else

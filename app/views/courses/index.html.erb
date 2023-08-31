@@ -4,7 +4,7 @@
 </head>
 <body>
     <h1 class="all-courses">All Courses</h1>
-    
+
     <main class="course-list">
       <%if @courses.empty? %>
         <h2 class="no-courses">No courses yet</h2>
@@ -12,7 +12,7 @@
       <%= render partial: "layouts/courses_show", collection: @courses, as: :course %>
       <% end %>
     </main>
-
     <%= link_to "Back", authenticated_instructor_root_path, class: "button" %>
+    <br><br><br><br>
 </body>
 

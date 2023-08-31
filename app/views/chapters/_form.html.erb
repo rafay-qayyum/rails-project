@@ -1,3 +1,5 @@
+<script src="https://cdn.jsdelivr.net/npm/easymde@2.10.0/dist/easymde.min.js"></script>
+<%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/easymde@2.10.0/dist/easymde.min.css" %>
 <% if chapter.errors.any? %>
   <% chapter.errors.full_messages.each do |message|%>
   <h4><%= message %> </h4>
@@ -15,7 +17,9 @@
 
     <div class="form-group">
       <%= f.label :content %>
-      <%= f.text_area :content, rows: 30, required: true %>
+      <div class="markdown-input">
+        <%= f.text_area :content, id: "markdownInput", required: true %>
+      </div>
     </div>
 
     <div class="form-group">
@@ -47,3 +51,18 @@
 <div class="buttons-container">
   <%= link_to "Back to Course", course_path(@chapter.course), class:"button"%>
 </div>
+
+<script>
+  var markdownEditor = new EasyMDE({
+    element: document.getElementById("markdownInput"),
+    autoDownloadFontAwesome: false,
+    renderingConfig: {
+      singleLineBreaks: false,
+      codeSyntaxHighlighting: true
+    },
+    autofocus: true,
+    toolbar: false,
+    toolbarTips: false
+});
+</script>
+
