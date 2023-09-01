@@ -1,0 +1,6 @@
+<!-- app/views/phone_verification/verify.html.erb -->
+<%=form_with model: @current_user, url: create_phone_verification_path do |f| %>
+    <%=f.label :phone_number, 'Enter Phone Number' %>
+    <%=f.text_field :phone_number %>
+    <%=f.submit 'Send OTP' %>
+<% end %>

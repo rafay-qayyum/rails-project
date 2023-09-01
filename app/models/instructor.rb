@@ -19,6 +19,8 @@ class Instructor < ApplicationRecord
   validates :is_suspended, inclusion: { in: [true, false] }
   validates :email, presence: true, uniqueness: true
   validates :encrypted_password, presence: true
+  validates :phone_number, uniqueness: true
+  validates :phone_verified, inclusion: { in: [true, false] }
 
   # Ransack: Active Admin
   def self.ransackable_attributes(auth_object = nil)

@@ -21,6 +21,7 @@ class Ability
       can :manage, Chapter, course: { instructor_id: user.id }
       can :manage, Instructor, id: user.id
       can :read, Course
+      can [:edit, :update,:verify], :phone_verifications, instructor_id: user.id, class: false
     end
 
     if user.is? :student
@@ -34,6 +35,7 @@ class Ability
       can :read , ChapterResult
       can :manage, PeerReview
       can [:search] , Course
+      can [:edit, :update,:verify], :phone_verifications, student_id: user.id, class: false
     end
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/blob/develop/docs/define_check_abilities.md

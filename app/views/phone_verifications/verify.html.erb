@@ -1,0 +1,6 @@
+
+<%=form_with url: verify_phone_path, method: :get  do |f| %>
+    <%=f.label :otp, 'Enter OTP' %>
+    <%=f.text_field :otp %>
+    <%=f.submit 'Verify' %>
+<% end %>
