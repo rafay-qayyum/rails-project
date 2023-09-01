@@ -1,10 +1,9 @@
-<head>
-  <title>Phone Number Input Form</title>
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.12/css/intlTelInput.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.12/js/intlTelInput.js"></script>
-</head>
+<title>Phone Number Input Form</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.12/css/intlTelInput.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.12/js/intlTelInput.js"></script>
+
 
 <form id="phone-form">
     <label for="phone">Phone Number:</label>
@@ -46,6 +45,7 @@
                         window.location.href = "/verify_phone";
                     }
                     else {
+                        alert(response.message)
                     }
                 },
                 error: function(response) {

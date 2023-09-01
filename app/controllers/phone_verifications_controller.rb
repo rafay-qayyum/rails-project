@@ -12,18 +12,19 @@ class PhoneVerificationsController < ApplicationController
   # PATCH /phone_verifications
   def update
     authorize! :update, current_user
+    if Student.where(phone_number: params[:phone_number]).exists? or Instructor.where(phone_number: params[:phone_number]).exists?
+      render json: {success: false, message: "Phone number already exists"} and return
+    end
+
     if current_user.update(phone_number: params[:phone_number], phone_verified: false)
       otp = rand(10000..99999)
       otp_expiration = Time.now + 10.minutes # Set OTP expiration time
-
-
       Rails.cache.write( current_user.phone_number, otp, expires_in: 10.minutes)
       send_otp(current_user.phone_number, otp)
       flash[:notice] = "Your OTP is sent to your phone number"
       render json: {success: true}
     else
-      flash[:alert] = "Could not Send OTP"
-      render json: {success: false}
+      render json: {success: false, message: "Something went wrong"} 
     end
   end
 
