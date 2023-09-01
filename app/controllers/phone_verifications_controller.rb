@@ -13,7 +13,7 @@ class PhoneVerificationsController < ApplicationController
   def update
     authorize! :update, current_user
     if Student.where(phone_number: params[:phone_number]).exists? or Instructor.where(phone_number: params[:phone_number]).exists?
-      render json: {success: false, message: "Phone number already exists"} and return
+      render json: {success: false, message: "Phone number already taken"} and return
     end
 
     if current_user.update(phone_number: params[:phone_number], phone_verified: false)
@@ -24,7 +24,7 @@ class PhoneVerificationsController < ApplicationController
       flash[:notice] = "Your OTP is sent to your phone number"
       render json: {success: true}
     else
-      render json: {success: false, message: "Something went wrong"} 
+      render json: {success: false, message: "Something went wrong"}
     end
   end
 
