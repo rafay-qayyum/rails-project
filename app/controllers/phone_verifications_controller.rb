@@ -2,11 +2,14 @@
 class PhoneVerificationsController < ApplicationController
   include SmsTwilio
 
+  #GET /phone_verifications
   def edit
     authorize! :edit, current_user
     @current_user = current_user
 
   end
+
+  # POST /phone_verifications
   def update
     authorize! :update, current_user
     if current_user.update(phone_number: params[:student][:phone_number])
@@ -24,7 +27,7 @@ class PhoneVerificationsController < ApplicationController
     end
   end
 
-  # get
+  # GET /verify_phone
   def verify
     authorize! :verify, current_user
     if !params[:otp].blank? and !params[:otp].nil?
