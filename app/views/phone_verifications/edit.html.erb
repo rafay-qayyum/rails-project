@@ -1,6 +1,59 @@
-<!-- app/views/phone_verification/verify.html.erb -->
-<%=form_with model: @current_user, url: create_phone_verification_path do |f| %>
-    <%=f.label :phone_number, 'Enter Phone Number' %>
-    <%=f.text_field :phone_number %>
-    <%=f.submit 'Send OTP' %>
-<% end %>
+
+<title>Phone Number Input Form</title>
+
+
+<form id="phone-form">
+    <label for="phone">Phone Number:</label>
+    <input type="tel" id="phone" name="phone" value=<%= @current_user.phone_number if @current_user.phone_number %> required>
+    <br><br>
+    <input type="submit" value="Submit", class="button">
+</form>
+
+<script>
+    var phoneInput = document.getElementById("phone");
+
+    // Initialize the intl-tel-input plugin
+    var iti = window.intlTelInput(phoneInput, {
+    preferredCountries: ["US", "GB", "CA"], // Customize the list of preferred countries
+    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.12/js/utils.js", // Include the utils.js file
+    });
+
+    // Validate the phone number when the form is submitted
+    document.getElementById("phone-form").addEventListener("submit", function(event) {
+    const isValid = iti.isValidNumber();
+    if (!isValid) {
+        event.preventDefault();
+        alert("Invalid phone number format. Please enter a valid phone number.");
+    }
+    else {
+        const phoneNumber = iti.getNumber();
+        console.log(phone);
+        $.ajax({
+            url: "/phone_verification",
+            type: "Patch",
+            headers: {
+                "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content")
+            },
+            data: { phone_number:phoneNumber},
+            success: function(response) {
+                console.log(response);
+                if (response.success) {
+                    //render the verification code input route
+                    window.location.href = "/verify_phone";
+                }
+                else {
+                    alert(response.message)
+                }
+            },
+            error: function(response) {
+                console.log(response);
+                alert("Error sending verification code.");
+            }
+        });
+    }
+    });
+</script>
+
+
+
+

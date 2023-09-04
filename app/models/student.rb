@@ -22,7 +22,7 @@ class Student < ApplicationRecord
   validates :is_suspended, inclusion: { in: [true, false] }
   validates :email, presence: true, uniqueness: true
   validates :encrypted_password, presence: true
-  validates :phone_number, uniqueness: true
+  validates :phone_number, uniqueness: true, allow_nil: true
   validates :phone_verified, inclusion: { in: [true, false] }
 
   # Ransack: Active Admin
@@ -40,9 +40,6 @@ class Student < ApplicationRecord
     :student.to_s == requested_role.to_s
   end
 
-  def send_devise_notification(notification, *args)
-    devise_mailer.send(notification, self, *args).deliver_later
-  end
 private
   # set default values
   def set_defaults

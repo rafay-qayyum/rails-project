@@ -1,5 +1,5 @@
 module SmsTwilio
   def send_otp(to, otp)
-    SmsWorker.perform_async(to, otp)
+    SmsJob.perform_later(to, otp)
   end
 end
