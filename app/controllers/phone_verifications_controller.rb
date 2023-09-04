@@ -35,6 +35,10 @@ class PhoneVerificationsController < ApplicationController
       flash[:notice] = "Phone number already verified"
       redirect_to root_path and return
     end
+    if current_user.phone_number.nil?
+      flash[:alert] = "Please enter phone number first"
+      redirect_to phone_verification_path and return
+    end
     if !params[:otp].blank? and !params[:otp].nil?
       @otp = Rails.cache.read(current_user.phone_number)
       if current_user && @otp == params[:otp].to_i
