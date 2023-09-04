@@ -10,8 +10,8 @@ class Chapter < ApplicationRecord
   has_one :chapter_results, dependent: :destroy, :class_name => "ChapterResult"
 
   # Validations
-  validates :name, presence: true, length: { minimum:10, maximum: 50 }
-  validates :content, presence: true, length: { minimum:40, maximum:800 }
+  validates :name, presence: true, length: { minimum:10, maximum: 80 }
+  validates :content, presence: true, length: { minimum:400, maximum: 15000 }
   validates :course_id, presence: true, numericality: { only_integer: true }
 
   # Ransack

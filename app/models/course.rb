@@ -37,6 +37,8 @@ class Course < ApplicationRecord
       self.total_chapters = 0
     end
   end
+  after_commit :clear_image_url_cache
+  after_commit :clear_course_cache
 
   # Associations
   belongs_to :instructor
@@ -49,13 +51,15 @@ class Course < ApplicationRecord
 
   # Validations
   validates :total_chapters, presence: true, numericality: { only_integer: true , greater_than_or_equal_to: 0 } #, default: 0
-  validates :title, presence: true, length: { minimum: 5 , maximum: 60 }
-  validates :description, presence: true, length: { minimum: 5, maximum: 500 }
+  validates :title, presence: true, length: { minimum: 5 , maximum: 70 }
+  validates :description, presence: true, length: { minimum: 5, maximum: 600 }
   validates :price, presence: true
   validates :language, presence: true
-  validates :requirements, presence: true, length: { minimum:0, maximum:400 }
+  validates :requirements, presence: true, length: { minimum:0, maximum:600 }
   validates :instructor_id, presence: true, numericality: { only_integer: true }
 
+
+  
   # Ransack
   def self.ransackable_attributes(auth_object = nil)
     ["created_at", "description", "id", "instructor_id", "language", "price", "requirements", "title", "total_chapters", "updated_at"]
@@ -69,6 +73,8 @@ class Course < ApplicationRecord
        methods: [:service_url]
     )
   end
+
+  # To get the image url from the ActiveStorage table
   def service_url
     if self.image.attached?
       Rails.application.routes.url_helpers.rails_blob_url(self.image, only_path: true)
@@ -76,5 +82,27 @@ class Course < ApplicationRecord
       nil
     end
   end
+
+  # To get the image url from the ActiveStorage table cached
+  def cached_image_url
+    Rails.cache.fetch("course_#{id}_image_url") do
+      if image.attached?
+        Rails.application.routes.url_helpers.rails_blob_url(image, only_path: true)
+      else
+        nil
+      end
+    end
+  end
+
+  # To clear the image url from the ActiveStorage table cached
+  def clear_image_url_cache
+    Rails.cache.delete("course_#{id}_image_url")
+  end
+
+  # To clear the course cached
+  def clear_course_cache
+    Rails.cache.delete("all_courses")
+  end
+
 end
 

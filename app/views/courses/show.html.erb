@@ -59,11 +59,12 @@
   <% else %>
       <%= link_to "Back to Course Catalog", authenticated_instructor_root_path, class:"button"%>
   <% end %>
+
   <%if current_student%>
-  <% if can? :create, Enrollment and @enrollment.nil? %>
-    <%= link_to "Enroll", course_enrollments_path(@course), class:"button", data: { 'turbo-method': :post }%>
-  <%elsif can? :destroy, Enrollment and !@enrollment.nil? %>
-    <%= link_to "Unenroll", course_enrollment_path(@course, @enrollment), class:"button", data: { 'turbo-method': :delete, turbo_confirm: "Are you sure?" }%>
-  <% end %>
+    <% if can? :create, Enrollment and @enrollment.nil? %>
+      <%= link_to "Enroll", course_enrollments_path(@course), class:"button", data: { 'turbo-method': :post }%>
+    <%elsif can? :destroy, Enrollment and !@enrollment.nil? %>
+      <%= link_to "Unenroll", course_enrollment_path(@course, @enrollment), class:"button", data: { 'turbo-method': :delete, turbo_confirm: "Are you sure?" }%>
+    <% end %>
   <%end%>
 </body>

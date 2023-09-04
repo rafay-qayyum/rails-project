@@ -2,7 +2,9 @@ class CoursesController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @courses=@courses.includes(:image_attachment)
+    @courses = Rails.cache.fetch("all_courses", expires_in: 1.hour) do
+              Course.all.to_a
+              end
   end
 
   def new
@@ -26,20 +28,10 @@ class CoursesController < ApplicationController
     @message = nil
     if current_user.is_a?(Student)
       @enrollment = Enrollment.where(student_id: current_user.id, course_id: params[:id]).first
-      # get grade if enrollment exists, if grade is O then student has not completed the course
       @grade = !@enrollment.nil? ? @enrollment.grade : nil
-      if !@enrollment.nil?
-        if @grade == 'O'
-          @message = 'Pending'
-        else
-          @message = "#{@grade}"
-        end
-      end
+      @message = nil if @enrollment.nil?
+      @message = @grade == 'O' ? 'Pending' : "#{@grade}"
     end
-  end
-
-  def edit
-
   end
 
   def update
@@ -60,8 +52,6 @@ class CoursesController < ApplicationController
     if !params[:search].blank?
       @courses = Course.search(params[:search]).records
     end
-    # fetch the images for the courses @courses from the database
-    # add the images to the @courses array
   end
 
 private
@@ -69,6 +59,9 @@ private
     params.require(:course).permit(:title,:description,:price,:language,:requirements,:image)
   end
 
+  # Arguments: None
+  # Returns: Student or Instructor object
+  # Description: Returns the current user object
   def current_user
     current_student || current_instructor
   end

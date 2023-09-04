@@ -22,19 +22,26 @@ class Student < ApplicationRecord
   validates :is_suspended, inclusion: { in: [true, false] }
   validates :email, presence: true, uniqueness: true
   validates :encrypted_password, presence: true
+  validates :phone_number, uniqueness: true
+  validates :phone_verified, inclusion: { in: [true, false] }
 
-  # Ransack
+  # Ransack: Active Admin
   def self.ransackable_attributes(auth_object=nil)
     ["email", "is_suspended", "name", "updated_at", "created_at", "remember_created_at", "reset_password_sent_at", "reset_password_token", "encrypted_password"]
   end
 
-  # Ransack
+  # Ransack: Active Admin
   def self.ransackable_associations(auth_object = nil)
     ["chapter_results", "courses", "enrollments", "posts", "replies"]
   end
 
+  # Check if the requested role is student: Devise
   def is?( requested_role )
     :student.to_s == requested_role.to_s
+  end
+
+  def send_devise_notification(notification, *args)
+    devise_mailer.send(notification, self, *args).deliver_later
   end
 private
   # set default values

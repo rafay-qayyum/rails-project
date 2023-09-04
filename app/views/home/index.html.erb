@@ -1,9 +1,38 @@
 <head>
-  <title style= "body, h2, h1, div, label, input, form, em {
-  margin: 0;
-  padding: 0;
-}">Elearning</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%= stylesheet_link_tag 'home_index.css' %>
+  <title>Welcome to E-learning Platform</title>
 </head>
 
+<body>
+    <section id="hero" style="background-image: url(<%= image_path "img2.jpg" %>)">
+        <h1>Welcome to the Future of Learning</h1>
+        <p>Upgrade your skills with our interactive courses.</p>
+        <%= link_to "Get Started", new_student_registration_path, class: "button" %>
+    </section>
+
+    <section id="features">
+        <h2>Features</h2>
+
+        <div class="feature">
+            <%= image_tag "img1.jpg", alt: "Feature 1" %>
+            <h3>Interactive Courses</h3>
+            <p>Engaging and interactive courses to keep you motivated.</p>
+            <br>
+        </div>
+
+        <div class="feature">
+            <%= image_tag "img2.jpg", alt: "Feature 2" %>
+            <h3>Expert Instructors</h3>
+            <p>Learn from industry experts with real-world experience.</p>
+        </div>
+    </section>
+
+    <section id="signup">
+        <h2>Join Us Today</h2>
+        <p>Start your learning journey now!</p>
+        <%= link_to "Sign Up", new_student_registration_path, class: "button" %>
+    </section>
+</body>
 
 

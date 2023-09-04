@@ -64,11 +64,16 @@
 <% end %>
 
 <br>
-<h2>Cancel my account</h2>
+<h2>Add phone number</h2>
+  <div>
+    <%= link_to "Edit phone number",  phone_verification_path, class:"button"%>
+  </div>
 
+
+<h2>Cancel my account</h2>
 <div>
   <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %>
 </div>
 
 <br>
-<%= link_to "Back", :back %>
+<%= link_to "Back", :back, class: "button"%>

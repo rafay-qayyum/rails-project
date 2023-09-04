@@ -1,7 +1,7 @@
 
 <head>
   <title>Search Courses</title>
-  <%= stylesheet_link_tag 'search'%>
+  <%= stylesheet_link_tag 'search_courses'%>
   <%= stylesheet_link_tag 'index_courses'%>
 </head>
 <body>
@@ -14,6 +14,7 @@
     <%= submit_tag "Search", class: "button" %>
   <% end %>
 </div>
+
   <% unless @courses.nil? %>
     <% if @courses.empty? %>
       <h2>No Course matching your query found</h2>

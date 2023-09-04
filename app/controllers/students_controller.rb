@@ -10,9 +10,12 @@ class StudentsController < ApplicationController
     @enrollments.each do |enrollment|
       @progress[enrollment.course_id] = (enrollment.chapters_completed.to_f/enrollment.course.total_chapters.to_f)*100
     end
-
   end
+
 private
+  # Arguments: None
+  # Returns: Student or Instructor object
+  # Description: Returns the current user object
   def current_user
     current_instructor || current_student
   end

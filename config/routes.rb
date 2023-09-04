@@ -1,10 +1,13 @@
+require 'sidekiq/web'
 Rails.application.routes.draw do
   devise_for :instructors
   devise_for :students
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  # for now we will just define a root route
+
+  Elearning::Application.routes.draw do
+    mount Sidekiq::Web => "/sidekiq" # mount Sidekiq::Web in your Rails app
+  end
   authenticated :student do
     root :to => 'students#show' , as: :authenticated_student_root
   end
@@ -13,10 +16,6 @@ Rails.application.routes.draw do
   end
   root "home#index"
   get "/about", to: "home#about"
-  # resources :courses, only: [:index,:show]
-  # resources :students do
-  #   resources :courses, only: [:index]
-  # end
   resources :courses do
 
     collection do
@@ -32,17 +31,13 @@ Rails.application.routes.draw do
   resources :comments, only: [:create, :destroy]
   resources :instructors
   resource :student
-  #post '/courses/search', to: 'courses#search' , as: 'search_course_post'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  # for now we will just define a root route
-  # authenticated :student do
-  #   root :to => 'students#index' , as: :authenticated_student_root
-  # end
-  # authenticated :instructor do
-  #   root :to => 'instructors#index' , as: :authenticated_instructor_root
-  # end
-  # root "home#index"
-  # get "/about", to: "home#about
-  # Defines the root path route ("/")
-  # root "articles#index"
+  get "/phone_verification", to: "phone_verifications#edit" , as: :phone_verification
+  patch "/phone_verification", to: "phone_verifications#update", as: :create_phone_verification
+  get "/verify_phone", to: "phone_verifications#verify", as: :verify_phone
+
+
+
+  get '/404', to: 'errors#not_found'
+  get '/500', to: 'errors#internal_server'
+  get '/422', to: 'errors#unprocessable'
 end

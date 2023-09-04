@@ -19,16 +19,20 @@ class Instructor < ApplicationRecord
   validates :is_suspended, inclusion: { in: [true, false] }
   validates :email, presence: true, uniqueness: true
   validates :encrypted_password, presence: true
+  validates :phone_number, uniqueness: true
+  validates :phone_verified, inclusion: { in: [true, false] }
 
-  # Ransack
+  # Ransack: Active Admin
   def self.ransackable_attributes(auth_object = nil)
     ["created_at", "email", "id", "is_suspended", "name", "remember_created_at", "reset_password_sent_at", "reset_password_token", "updated_at"]
   end
 
+  # Ransack: Active Admin
   def self.ransackable_associations(auth_object = nil)
     ["courses", "posts", "replies"]
   end
 
+  # Check if the requested role is instructor: Devise
   def is?( requested_role )
     :instructor.to_s == requested_role.to_s
   end
